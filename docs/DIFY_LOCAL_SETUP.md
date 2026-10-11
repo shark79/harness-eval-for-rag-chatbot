@@ -4,6 +4,8 @@ The selected endpoint is `http://localhost/v1` for native commands and `http://h
 
 ## Local Dify deployment
 
+The official 1.17.1 deployment checkout is available at `/Users/shark7901/Documents/Projects/dify-local`, commit `8387590ace4a094de812b7847fc6a4c3a27cd52b`. It uses sparse checkout for the Docker tree after full-clone transfer failures. All deployment files and Compose syntax were verified; Dify startup and account initialization remain pending. See [clone recovery and startup commands](../starter-kit/TROUBLESHOOTING.md#dify-clone-resets-or-reports-early-eof).
+
 Use the [official Docker Compose guide](https://docs.dify.ai/en/self-host/deploy/quick-start/docker-compose) and the Compose files from an explicit released Dify tag. The toolkit Compose stack runs only the ticket demo; it does not install Dify. On macOS, the official guide recommends at least 2 virtual CPUs and 8 GiB of Docker VM memory.
 
 After starting Dify, open `http://localhost/install` to initialize its local admin account, then `http://localhost` to create the Workflow. A Cloud workspace and its app keys are separate from this local instance. Publish the local Workflow, then create its app API key from its API Access page and store it only in `.env`.

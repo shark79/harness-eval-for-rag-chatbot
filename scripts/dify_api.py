@@ -251,7 +251,7 @@ class NoRedirect(HTTPRedirectHandler):
 def request(call: Call, base: str, timeout: float, token: str) -> JsonObject:
     """Send a single bounded request; report only safe HTTP/network errors."""
     data = json.dumps(call.body, allow_nan=False).encode("utf-8") if call.body is not None else None
-    req = Request(base + call.path, data=data, method=call.method, headers={"Authorization": "Bearer " + token, "Accept": "application/json", "Content-Type": "application/json"})
+    req = Request(base + call.path, data=data, method=call.method, headers={"Authorization": "Bearer " + token, "Accept": "application/json", "Content-Type": "application/json", "User-Agent": "dify-project-toolkit/0.1"})
     try:
         with build_opener(NoRedirect()).open(req, timeout=timeout) as response:
             length = response.headers.get("Content-Length")

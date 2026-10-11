@@ -158,10 +158,12 @@ class LocalApiTests(unittest.TestCase):
         cls.recorded: list[tuple[str, str, str | None, bytes]] = []
         cls.redirect_target: str | None = None
         cls.advertised_length: int | None = None
+        cls.user_agent: str | None = None
 
         class Handler(BaseHTTPRequestHandler):
             def handle_request(self) -> None:
                 length = int(self.headers.get("Content-Length", "0"))
+                cls.user_agent = self.headers.get("User-Agent")
                 cls.recorded.append((self.command, self.path, self.headers.get("Authorization"), self.rfile.read(length)))
                 self.send_response(cls.status)
                 self.send_header("Content-Type", "application/json")
@@ -206,6 +208,7 @@ class LocalApiTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)["data"]["outputs"], {"message": "hello"})
         method, path, authorization, raw = self.recorded[0]
         self.assertEqual((method, path, authorization), ("POST", "/v1/workflows/run", "Bearer app-secret"))
+        self.assertEqual(self.user_agent, "dify-project-toolkit/0.1")
         self.assertEqual(json.loads(raw), {"inputs": {"question": "hello"}, "response_mode": "blocking", "user": "alice"})
 
     def test_runtime_workflow_uses_local_settings_and_keeps_output_contract(self) -> None:

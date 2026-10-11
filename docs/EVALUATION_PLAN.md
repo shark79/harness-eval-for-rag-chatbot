@@ -1,6 +1,6 @@
 # Evaluation harness and acceptance plan
 
-Design baseline: 2026-10-11. No ticket-generation benchmark, retrieval run or live model call has been executed. This document specifies the harness before implementation. The existing helper's software tests do not measure ticket-resolution quality.
+Maintained 2026-10-11. Harness Evals is the selected runtime evaluation framework. The original design below remains the full target; see [scoring and delivery policy](SCORING_POLICY.md) for the current thresholds and implementation scope. Software tests and offline rule checks do not measure semantic ticket-resolution quality.
 
 ## Product target and denominators
 
@@ -57,7 +57,7 @@ Expected internal judge record: `run_id`, `attempt`, gate booleans, supported/un
 
 ## Bounded correction loop
 
-Allow one initial candidate and at most two corrective attempts as an initial design budget, with an overall timeout/cost ceiling chosen during implementation. Record every attempt; never count retries as new tickets.
+Allow one initial candidate and at most one corrective attempt, exclusively when its valid score is in [0.70, 0.80) and a supported correction is possible. Keep the evidence authority, rubric and thresholds unchanged. Scores below 0.70 hold off without a semantic retry. Final outcomes are ship or hold off. A correction must improve the score and reach at least 0.80 while passing every hard gate; otherwise hold off. Record initial/final scores, why each dimension was ranked, why the final decision was made, and separate generation/scoring retry flags. Record every attempt; never count retries as new tickets.
 
 | Failure | Corrective action |
 |---|---|
@@ -71,15 +71,11 @@ Allow one initial candidate and at most two corrective attempts as an initial de
 
 Pass each candidate through the full gates after correction. Stop early when no new evidence/interpretation is gained or when the same failure repeats. After the cap, route to review/clarification/escalation with the supported partial answer when appropriate; never automatically release a failed candidate. Retain the initial and final outcome to measure actual retry benefit and regression. A revision loop must not launder fabricated claims by changing a citation or disposition alone.
 
-## Harness tool proposition
+## Selected evaluation runner
 
-| Option | Problem it solves | Proposed role |
-|---|---|---|
-| [promptfoo](https://github.com/promptfoo/promptfoo) | Repeatable input/output runs, comparisons and regression assertions | First runner once implementation starts: a [custom provider](https://www.promptfoo.dev/docs/providers/custom-api/) can call the Dify endpoint and retain trace metadata; [assertions](https://www.promptfoo.dev/docs/configuration/expected-outputs/) cover JSON/schema checks, custom semantic rubrics and separate metrics. All hard gates remain conjunctive, not a weighted average. |
-| [Ragas](https://github.com/vibrantlabsai/ragas) | RAG-specific diagnostic metrics | Optional later diagnostic adapter. [Faithfulness](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/) checks claims against retrieved context; [context recall](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_recall/) checks supporting coverage using a reference. These do not establish the whole ticket was resolved. |
-| [DeepEval](https://github.com/confident-ai/deepeval) | Python-based semantic test organization and judge metrics | Alternative if implementation favors pytest. [Answer relevancy](https://deepeval.com/docs/metrics-answer-relevancy) and [faithfulness](https://deepeval.com/docs/metrics-faithfulness) are distinct diagnostics. Choose an explicit LLM judge path matching OpenAI; do not enable a Jev-dependent evaluation mode. |
+The user selected [Harness Evals](https://github.com/harness/harness-evals). Use its core `Golden`, `EvalCase`, `BaseMetric`, `Score` and `evaluate` interfaces with project-specific rules and the OpenAI Decisions semantic adapter. Its optional TypeSafe provider is not selected. Pin the published version and record the package version in every run. The [scoring policy](SCORING_POLICY.md) defines weighted diagnostic dimensions, hard delivery gates and the exact 0.70/0.80 boundaries. Offline checks remain distinct from semantic judgments.
 
-Recommendation: start with one runner (promptfoo) and project-specific semantic rubrics, then add Ragas only if retrieval diagnostics materially help. Do not install three frameworks or move workflow orchestration out of Dify for evaluation convenience. Verify/pin selected framework versions and licenses at implementation; current docs were researched 2026-10-11. Context7 documentation resolution was attempted but unavailable during this research, so official docs/repositories were used. No dependencies have been added by this plan.
+Promptfoo, Ragas and DeepEval were researched alternatives; they are deferred to avoid multiple runners. Harness Evals now replaces the earlier promptfoo recommendation. Context7 did not identify this repository; the official repository and installed source are the API authority.
 
 ## Software tests versus AI evaluations
 

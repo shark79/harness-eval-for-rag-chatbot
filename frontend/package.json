@@ -1,0 +1,6 @@
+{
+  "name": "ticket-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/*.test.js", "check": "node --check src/app/app.js && node --check src/components/results.js && node --check src/services/api.js" }
+}

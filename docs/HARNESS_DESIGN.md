@@ -110,7 +110,7 @@ Keep explicit failure codes, failed subticket/claim IDs, evidence IDs, and a pre
 
 Default design budgets are provisional controls to validate in the selected deployment:
 
-- Maximum **3 total candidate-answer attempts**, including the first; at most 2 semantic repairs. No unconditional reset to attempt zero.
+- Maximum **2 total candidate-answer attempts**, including the first; at most 1 semantic repair, only for a valid score in [0.70, 0.80). Keep scoring rules fixed; final decisions are ship or hold off. No unconditional reset to attempt zero.
 - At most 5 subtickets. If more are present, preserve the overflow and ask the customer to split or route for review; do not silently discard concerns.
 - At most 8 retrieval calls across the ticket, including per-concern initial queries and repair/fallback. Cache identical permitted queries within the run.
 - At most 16 logical AI calls across Responses extraction/planning/generation/judging/repair and Decisions routing/evaluation. Initial clear ticket normally needs 6: understand → Decisions route → plan → answer → Decisions checks → structured judge. Batch compatible bounded questions where supported by the verified endpoint; do not let per-claim checks expand calls without budget accounting.
@@ -163,7 +163,7 @@ These are proposed canvas names and explicit variable bindings, not node IDs or 
 | `Retrieve Evidence` / Knowledge Retrieval | current query text; fixed approved dataset binding | native `result` → evidence validation/merge; Context input of answer/evaluator nodes |
 | `Merge Evidence` / Code | retrieval arrays, approved manifest and revision | declared `evidence_bundle`, bounded context and provenance flags |
 | `Build Acceptance Plan` / LLM | original, validated interpretation, evidence; evaluator prompt in plan mode | native `structured_output` → validated acceptance plan |
-| `Answer Attempts` / Loop | attempt counter, bundle, understanding, plan, last failure, remaining budgets | persisted state; maximum loop count 3 and explicit exit conditions |
+| `Answer Attempts` / Loop | attempt counter, bundle, understanding, plan, last failure, remaining budgets | persisted state; maximum loop count 2 and explicit exit conditions |
 | `Draft Answer` / LLM | original + understanding + plan; retrieved `result` in Context; answer-generator prompt | native `structured_output` → canonical candidate, not yet customer-visible |
 | `Validate Candidate` / Code | candidate + IDs + all budgets | deterministic checks → If-Else or evaluator |
 | `Evaluate Decisions` / HTTP Request through future `DecisionService` | original + approved evidence + candidate + bounded named predicates | declared parsed `decision_answers` → calibrated gate signals |
@@ -181,7 +181,7 @@ Iteration is for independently processing array items; Loop carries evolving sta
 
 Human Input can pause for a review form; web-app delivery is unavailable in trigger-started workflows, and a timeout needs a fallback branch. For this first harness, return review disposition and review packet without sending notifications. Add a Human Input node only after choosing the actual review interface/delivery and checking target-version/API integration; place it outside the automatic answer loop. [Human Input](https://docs.dify.ai/en/cloud/use-dify/nodes/human-input)
 
-If the target cannot support the proposed Loop/Iteration arrangement, unroll three candidate/evaluator blocks with explicit branches or move the counter/state policy into the project's existing backend. Do not invent a compatible DSL. Final graph construction, import, preview, and API tests are future implementation steps.
+If the target cannot support the proposed Loop/Iteration arrangement, unroll two candidate/evaluator blocks with explicit branches or move the counter/state policy into the project's existing backend. Do not invent a compatible DSL. Final graph construction, import, preview, and API tests are future implementation steps.
 
 ## Selected OpenAI Decisions integration and typed outputs
 

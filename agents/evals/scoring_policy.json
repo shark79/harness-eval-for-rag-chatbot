@@ -1,0 +1,18 @@
+{
+  "version": "1.0-shadow",
+  "ship_threshold": 0.8,
+  "retry_threshold": 0.7,
+  "predicate_threshold": 0.9,
+  "max_attempts": 2,
+  "timeout_seconds": 120,
+  "weights": {
+    "grounding": 0.3,
+    "factual_correctness": 0.25,
+    "concern_relevance": 0.2,
+    "completeness": 0.15,
+    "category_accuracy": 0.05,
+    "clarity": 0.05
+  },
+  "release_ready": false,
+  "release_blocker": "Draft case rubrics require independent human approval and judge calibration."
+}

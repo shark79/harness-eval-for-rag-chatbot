@@ -1,6 +1,6 @@
 # Dify project toolkit
 
-Reusable Codex skills, agent briefs and API tooling for building a grounded Dify support assistant.
+A ticket chatbot and separate Harness Evals dashboard for reviewing support answers against approved documentation.
 
 The supplied fictional support dataset contains answers that invent or contradict product policy. The project uses approved product documentation for retrieval and the 26 tickets as a noisy baseline to review and evaluate. Start with [project guidelines](docs/PROJECT_GUIDELINES.md), which records source provenance, a ticket-by-ticket audit and proposed acceptance criteria.
 
@@ -12,32 +12,42 @@ The supplied fictional support dataset contains answers that invent or contradic
 - `scripts/dify_api.py`, a dependency-free Python helper for app metadata, blocking generation and knowledge operations, with credential-free request previews.
 - Byte-preserving copies of both supplied files, separated into knowledge sources and evaluation data.
 
-This is a toolkit and project baseline. A published support workflow, frontend/backend application, live Dify instance and model-quality benchmark remain to be implemented against the selected project.
+The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Dify Cloud is selected for live generation; a published Workflow and app key must be configured. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
+
+[Harness Evals](https://github.com/harness/harness-evals) supplies real `Golden`, `EvalCase`, metric and `Score` execution. OpenAI Decisions supplies optional semantic judging. Every final recommendation is **ship** or **hold off**. Only scores in **[0.70, 0.80)** permit **one** corrective response attempt; at least **0.80** also requires every grounding/relevance gate to pass. No score or no improvement means hold off. See [scoring policy](docs/SCORING_POLICY.md). Current rubric drafts and judge calibration block production delivery.
 
 ## Architecture and stack
 
-Use the consuming project's existing frontend and backend. The intended boundary is frontend → backend → published Dify Service API → retrieval/model/tools. Keep secret keys and deterministic business services on the backend. Dify manages the workflow and approved knowledge base. The CLI uses Python 3.11+ standard library; tests use `unittest` and a local HTTP stub.
+The application boundary is browser → Python HTTP backend → local approved retrieval or Dify Cloud Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
 
 The inspected upstream research snapshot is `langgenius/dify` commit `5fe7f018764e94aefa06f098a23e28a55d6b4e18`. That is research provenance, not a deployment recommendation. Select a release and verify feature/API compatibility before adoption; see the resource map.
 
-## Setup and verification
+## Setup, run and verification
 
 From this repository directory:
 
 ```sh
 make setup
-make test
-make check
-make demo
+make build
+make up
 ```
 
-`make demo` prints a proposed workflow request without credentials or network access. It verifies request construction; it does not run a live Dify workflow.
+Open [Ticket desk](http://127.0.0.1:8080). In the RAG bot tab, select a CSV ticket and draft an answer. Inspect its sources, then click Evaluate this response to open the Eval bot tab. Review the recommendation, original/final scores, retry flags and citations. You can also run the 26-ticket suite against existing CSV answers or fresh chatbot answers. Offline evaluation displays actual rule checks and **unrun** semantic scores; responses remain held. Generated reports live under `evals/results/`.
 
-`make test` covers validation, successful/failed workflow responses, safe error handling, local HTTP integration and subprocess CLI behavior. A real Dify instance, plugin import and provider/model calls must be verified separately.
+```sh
+make test PYTHON=.venv/bin/python
+make check PYTHON=.venv/bin/python
+.venv/bin/python scripts/run_evaluations.py --source baseline
+.venv/bin/python scripts/run_evaluations.py --source chatbot
+```
+
+Use `.venv/bin/python -m backend.app.api.server` for local development without Docker. Manage the standing container with `docker compose logs --tail=100 ticket-assistant` and `docker compose down`. Rebuild after source changes. See [quickstart](starter-kit/QUICKSTART.md), [environment variables](starter-kit/ENVIRONMENT.md), and [Dify Cloud setup](docs/DIFY_CLOUD_SETUP.md).
+
+Tests verify software behavior and score boundaries using controlled judge fixtures. Offline CSV runs assess explicit regressions and source integrity. Neither proves semantic resolution quality or the 95% product target. Live Dify/OpenAI verification requires keys.
 
 ## Configuration and commands
 
-The helper reads the process environment, not `.env` automatically. Use `.env.example` as a configuration template for the consuming project's centralized environment loader or export variables in your shell. `DIFY_API_BASE_URL` defaults to `https://api.dify.ai/v1`; `DIFY_TIMEOUT` defaults to 100 seconds. Live app commands require `DIFY_APP_API_KEY`; live knowledge commands require the separate `DIFY_KNOWLEDGE_API_KEY`. Live generation requires `DIFY_USER` or `--user`.
+The web application and evaluation CLI centrally load local `.env`; process environment values override it. The standalone Dify helper reads only process environment, not `.env` automatically. Use `.env.example` as a configuration template for the consuming project's centralized environment loader or export variables in your shell. `DIFY_API_BASE_URL` defaults to `https://api.dify.ai/v1`; `DIFY_TIMEOUT` defaults to 100 seconds. Live app commands require `DIFY_APP_API_KEY`; live knowledge commands require the separate `DIFY_KNOWLEDGE_API_KEY`. Live generation requires `DIFY_USER` or `--user`.
 
 ```sh
 python3 scripts/dify_api.py --help
@@ -65,12 +75,17 @@ See [adoption guidance](docs/ADOPTION.md) for integration steps. Native Dify age
 .agents/skills/          Codex skill entrypoints, references and UI metadata
 agents/workers/          Portable role briefs
 docs/                   Guidelines, resource map and adoption instructions
-knowledge/sources/      Approved fictional knowledge document
-evals/datasets/         Raw noisy support-answer dataset
+backend/app/            API, configuration, retrieval and Cloud adapter
+frontend/src/           Static ticket workspace and evaluation dashboard
+knowledge/sources/      Approved guide and narrow transport supplement
+shared/                 Canonical contracts, schemas and examples
+agents/evals/           Harness Evals metrics, policy and runner
+evals/                  Dataset, draft cases and generated results
+starter-kit/            Exact setup, configuration and troubleshooting
 scripts/                Service API helper
 tests/                  Unit, local HTTP integration and CLI tests
 ```
 
-## Next steps
+## Known limitations and next steps
 
-Select the target project and Dify deployment, configure a model and knowledge base, adjudicate evaluation cases, build/import a version-compatible workflow, and verify one real project request. Preserve the guidelines as the maintained project reference. This toolkit has no runnable application service; use the selected Dify release's upstream Compose stack for self-hosting rather than inventing a reduced deployment.
+Configure a published Dify Cloud Workflow and its app key locally; configure OpenAI access to measure semantic scores. Adjudicate the case drafts, calibrate the judge, then test a fresh holdout before approving delivery. The basic lexical router cannot establish semantic completeness for multi-issue tickets. The full structured concern-extraction/retrieval-repair design remains documented in `docs/HARNESS_DESIGN.md`; the current correction path passes evidence-anchoring feedback to the configured Workflow. No automatic ticket delivery is implemented.

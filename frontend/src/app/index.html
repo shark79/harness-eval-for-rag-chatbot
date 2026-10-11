@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket desk · Dify support</title>
+  <link rel="stylesheet" href="/src/components/styles.css">
+  <script type="module" src="/src/app/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main-content">Skip to content</a>
+  <header><div class="brand">Ticket desk <span>Dify support workspace</span></div><p id="connection" role="status">Connecting to the knowledge base…</p></header>
+  <nav class="assistant-tabs" role="tablist" aria-label="Support assistants"><button id="rag-tab" role="tab" aria-selected="true" aria-controls="rag-panel" type="button">RAG bot</button><button id="eval-tab" role="tab" aria-selected="false" aria-controls="eval-panel" tabindex="-1" type="button">Eval bot</button></nav>
+  <main id="main-content" tabindex="-1">
+    <section class="desk" id="rag-panel" role="tabpanel" aria-labelledby="rag-tab">
+      <div class="section-heading"><div><h1 id="desk-title">A grounded answer starts here.</h1><p>Paste a support ticket. Review the response and the documentation behind it.</p></div></div>
+      <form id="ticket-form">
+        <label for="sample-ticket">Choose a sample ticket</label>
+        <select id="sample-ticket"><option value="">Write your own ticket or choose one of the 26 samples</option></select>
+        <label for="ticket-text">Customer’s ticket</label>
+        <textarea id="ticket-text" name="ticket_text" rows="7" maxlength="16000" required placeholder="What is the customer trying to do, and what went wrong?"></textarea>
+        <div class="examples" aria-label="Example tickets"><span>Try an example</span><button type="button" data-example="app">App API key</button><button type="button" data-example="provider">Provider setup</button><button type="button" data-example="retrieval">Empty retrieval</button></div>
+        <div class="actions"><button class="primary" id="ask" type="submit">Draft an answer</button><span id="chat-status" role="status"></span></div>
+      </form>
+      <p id="chat-error" class="error" role="alert" hidden></p>
+      <div id="answer-area" hidden>
+        <div class="answer-heading"><h2>Response draft</h2><button id="export" type="button">Download CSV</button></div>
+        <div id="answer-meta" class="tags"></div>
+        <div id="answer-release" class="release"></div>
+        <div id="answer-text" class="answer"></div>
+        <details class="sources"><summary>Supporting documentation</summary><div id="evidence-list"></div></details>
+        <button class="primary" id="evaluate-draft" type="button">Evaluate this response</button>
+        <p class="quiet">A draft is not approved to send until the evaluator’s release gates pass.</p>
+      </div>
+      <div id="empty-answer" class="empty">Your answer and its supporting sources will appear here.</div>
+    </section>
+    <section class="evaluation" id="eval-panel" role="tabpanel" aria-labelledby="eval-tab" hidden>
+      <div class="section-heading"><div><h1 id="eval-title">Evaluate before sending.</h1><p>Check the RAG bot’s actual response against the ticket and approved documentation.</p></div><span class="suite-label">Harness Evals</span></div>
+      <div id="single-evaluation"><p class="quiet">Draft a response in the RAG bot tab, then choose “Evaluate this response.”</p></div>
+      <button class="primary" id="evaluate-current" type="button" hidden>Evaluate this response</button>
+      <p id="single-eval-status" role="status"></p><p id="single-eval-error" class="error" role="alert" hidden></p>
+      <div class="thresholds"><div><strong>≥ 0.80</strong><span>Ship after all gates pass</span></div><div><strong>0.70–&lt;0.80</strong><span>One corrective answer, then rescore</span></div><div><strong>&lt; 0.70</strong><span>Hold off for review</span></div></div>
+      <p class="quiet">Final decisions are ship or hold off. Missing semantic scores and hard failures are held off. Scoring uses the same rubric and sources on both attempts.</p>
+      <p class="quiet">The CSV’s existing answers are a baseline to assess, not approved reference answers.</p>
+      <h2 class="suite-heading">Run the full ticket suite</h2>
+      <form id="eval-form"><label for="eval-source">Answers to evaluate</label><div class="eval-actions"><select id="eval-source"><option value="baseline">Existing CSV answers</option><option value="chatbot">Fresh chatbot answers</option></select><button class="primary" id="run-eval" type="submit">Run evaluation suite</button></div></form>
+      <p id="eval-status" role="status">No run loaded yet.</p><p id="eval-error" class="error" role="alert" hidden></p>
+      <div id="eval-summary"></div><div id="eval-results"></div>
+    </section>
+  </main>
+  <footer>Approved fictional product documentation · Development workspace</footer>
+</body>
+</html>

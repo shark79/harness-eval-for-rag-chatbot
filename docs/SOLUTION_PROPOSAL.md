@@ -1,6 +1,17 @@
 # Support RAG harness: technical proposal
 
-Design baseline: 2026-10-11. This delivery scaffolds contracts, prompts, routing, evaluations and an implementation plan. It does not implement, deploy or benchmark the support pipeline. The existing Service API CLI remains available for later integration.
+Maintained 2026-10-11. The basic local application and Harness Evals runner implement the first slice. The complete structured reasoning pipeline below remains the target design. Live Dify Cloud and OpenAI verification require locally configured credentials.
+
+## Current two-assistant feature branches
+
+| Owner | Responsibility | Boundary |
+|---|---|---|
+| RAG bot (`backend/app/services/chat.py`) | Preserve the selected CSV ticket or typed question, retrieve approved content, produce a draft and citations | Does not grade or approve itself; local extractive mode is explicitly labeled |
+| Eval bot (`agents/evals/evaluation_service.py`) | Independently score the exact generated response and ticket with Harness Evals, explain ranking and enforce source/relevance gates | Cannot change documentation, the rubric or acceptance thresholds |
+| Local UI (`frontend/src/`) | RAG tab for the draft, Eval tab for single-response and batch review, final ship/hold recommendation and supporting citations | No credential storage in the browser and no customer-message delivery |
+| Backend transport (`backend/app/api/server.py`) | Keep generated drafts server-side, connect the tabs, serialize evaluations and call configured providers | Arbitrary browser-supplied text cannot substitute for a stored draft |
+
+Choose one of the 26 CSV tickets → RAG bot drafts from documentation → Eval tab receives that stored draft → Eval bot scores it → only [0.70, 0.80) returns once to RAG with source-anchoring feedback → full reevaluation → final ship or hold. A response below 0.70, a hard failure, missing judgment, no improvement, or a final score below 0.80 holds. Approved 0.80+ classifications remain provisional until case adjudication and judge calibration. The dashboard exposes both scores, retry flags and reasons. The CSV's known erroneous baseline answers can be evaluated separately to demonstrate the regression checks.
 
 ## Product objective
 
@@ -19,7 +30,7 @@ Marcus asks for the key that authenticates a call to his published Dify chatbot.
 | Drafting | Dify generative LLM node with evidence-bound prompt | Generic answers, unsupported promises and omitted subquestions | Customer answer, claim/evidence map and addressed concerns |
 | Independent checking | Evidence evaluator plus bounded Decisions predicates/scores | Citations can support an irrelevant answer; a second generated answer can share the same error | Separate grounding, relevance, scope, completeness and citation results |
 | Repair and termination | Deterministic controller/Dify branches and bounded Loop | Repeated blind regeneration hides retrieval errors and wastes cost | Specific repair action, attempt count, final acceptance or review reason |
-| Regression evaluation | Draft adjudicated cases, contrastive inputs; promptfoo recommended for later batch runs | Prompt changes can fix one ticket while breaking another | Per-case outcomes, failure types and explicit metric denominators |
+| Regression evaluation | Draft adjudicated cases, contrastive inputs; Harness Evals with project-specific Scores and OpenAI Decisions judging | Prompt changes can fix one ticket while breaking another | Per-case outcomes, failure types and explicit metric denominators |
 
 The dedicated [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions) supports bounded judgments. Extraction and written explanations use [structured generation](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses). Verify beta availability and the deployed Dify integration before wiring calls; a normal OpenAI provider plugin must not be assumed to expose the Decisions endpoint. The [tool research](TOOL_RESEARCH.md) records primary documentation and GitHub candidates.
 
@@ -62,7 +73,7 @@ The [Marcus understanding example](../shared/fixtures/marcus-understanding.examp
 
 The optional dummy/reference answer should be derived independently from the same question and approved evidence. Treat it as a hypothesis to inspect, not an authority. Prefer a reviewed requirement set over text similarity: correct key kind, correct key location, relevant steps, supported scope and no provider-key substitution. The evaluator must flag a wrong passage even when the citation is genuine.
 
-Retries change the stage responsible for failure. Wrong scope triggers reanalysis; missing relevant chunks expands/rephrases retrieval; unsupported wording with adequate evidence redrafts; missing customer facts clarifies; uncovered policy escalates. Allow at most three total draft attempts. A repeated identical failure, judge disagreement or exhausted cost/time budget terminates for review. The exact numeric probability thresholds remain calibration decisions, not promises.
+Retries change the stage responsible for failure. Wrong scope triggers reanalysis; missing relevant chunks expands/rephrases retrieval; unsupported wording with adequate evidence redrafts; missing customer facts clarifies; uncovered policy escalates. Allow the initial draft and one corrective attempt only for valid scores in [0.70, 0.80). Keep the rubric unchanged; no improvement or a final score below 0.80 holds off. Final outcomes are ship or hold off. A repeated identical failure, judge disagreement or exhausted cost/time budget terminates for review. The exact numeric probability thresholds remain calibration decisions, not promises.
 
 ## Testing and the 95% objective
 

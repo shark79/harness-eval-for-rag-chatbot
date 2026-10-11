@@ -1,0 +1,20 @@
+services:
+  ticket-assistant:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file: .env
+    environment:
+      PORT: "8080"
+      HOST: "0.0.0.0"
+    user: "${LOCAL_UID:-10001}:${LOCAL_GID:-10001}"
+    volumes:
+      - ./evals/results:/app/evals/results
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=5)"]
+      interval: 20s
+      timeout: 6s
+      retries: 3
+    restart: unless-stopped

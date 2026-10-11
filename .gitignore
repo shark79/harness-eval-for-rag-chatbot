@@ -8,3 +8,6 @@ __pycache__/
 # Attached originals remain in place; tracked copies live in knowledge/ and evals/.
 /Constructed fictional product documentation for the RAG knowledge base.md
 /Constructed fictional support ticket sample with RAG assistant answers.csv
+
+# Runtime evaluation reports are local; selected delivery snapshots are tracked explicitly.
+/evals/results/*

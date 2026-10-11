@@ -536,10 +536,10 @@
         "attempt": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 3
+          "maximum": 2
         },
         "max_attempts": {
-          "const": 3
+          "const": 2
         },
         "evidence_revision": {
           "type": "string"

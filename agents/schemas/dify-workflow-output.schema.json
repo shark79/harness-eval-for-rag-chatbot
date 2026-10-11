@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dify Workflow support response",
+  "description": "Final Workflow output assembled from a structured model draft and independently normalized retrieval evidence. Evidence metadata is never authored by the LLM.",
+  "type": "object",
+  "properties": {
+    "answer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "api_keys",
+        "account_workspace",
+        "model_providers",
+        "rag_pipeline",
+        "billing_plans",
+        "unknown"
+      ]
+    },
+    "disposition": {
+      "type": "string",
+      "enum": [
+        "answered",
+        "needs_clarification",
+        "partial_escalation",
+        "escalated",
+        "temporarily_unavailable"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "section_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_revision": {
+            "type": "string",
+            "minLength": 1
+          },
+          "excerpt": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "evidence_id",
+          "source_id",
+          "section_id",
+          "source_revision",
+          "excerpt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "source_id": {
+            "type": "string"
+          },
+          "section_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "source_id",
+          "section_id"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "answer",
+    "category",
+    "disposition",
+    "evidence",
+    "citations"
+  ],
+  "additionalProperties": false
+}

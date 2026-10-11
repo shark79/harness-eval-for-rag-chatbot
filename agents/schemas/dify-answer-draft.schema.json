@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "answer": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "api_keys",
+        "account_workspace",
+        "model_providers",
+        "rag_pipeline",
+        "billing_plans",
+        "unknown"
+      ]
+    },
+    "disposition": {
+      "type": "string",
+      "enum": [
+        "answered",
+        "needs_clarification",
+        "partial_escalation",
+        "escalated",
+        "temporarily_unavailable"
+      ]
+    },
+    "cited_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "answer",
+    "category",
+    "disposition",
+    "cited_evidence_ids"
+  ],
+  "additionalProperties": false
+}

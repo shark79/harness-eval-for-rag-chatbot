@@ -34,3 +34,5 @@ docker compose down
 ```
 
 Add credentials only to your local ignored `.env`. See [environment configuration](ENVIRONMENT.md). After changing container environment configuration, run `docker compose up -d --force-recreate`; after source edits, run `docker compose build` then `docker compose up -d`.
+
+For model-generated answers, first set up the separate local Dify instance and its published Workflow using [local Dify setup](../docs/DIFY_LOCAL_SETUP.md). The default extractive mode does not start Dify. Native commands use `http://localhost/v1`; the ticket container uses `http://host.docker.internal/v1`.

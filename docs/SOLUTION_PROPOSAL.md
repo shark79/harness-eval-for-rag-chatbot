@@ -1,6 +1,6 @@
 # Support RAG harness: technical proposal
 
-Maintained 2026-10-11. The basic local application and Harness Evals runner implement the first slice. The complete structured reasoning pipeline below remains the target design. Live Dify Cloud and OpenAI verification require locally configured credentials.
+Maintained 2026-10-11. The basic local application and Harness Evals runner implement the first slice. The complete structured reasoning pipeline below remains the target design. Live local Dify verification requires the separate self-hosted deployment and a published Workflow; Dify and OpenAI credentials are configured locally.
 
 ## Current two-assistant feature branches
 

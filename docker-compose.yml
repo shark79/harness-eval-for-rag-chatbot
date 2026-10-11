@@ -9,6 +9,9 @@ services:
     environment:
       PORT: "8080"
       HOST: "0.0.0.0"
+      DIFY_API_BASE_URL: "${DIFY_DOCKER_API_BASE_URL:-http://host.docker.internal/v1}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     user: "${LOCAL_UID:-10001}:${LOCAL_GID:-10001}"
     volumes:
       - ./evals/results:/app/evals/results

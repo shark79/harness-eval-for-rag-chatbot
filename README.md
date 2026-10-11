@@ -12,13 +12,13 @@ The supplied fictional support dataset contains answers that invent or contradic
 - `scripts/dify_api.py`, a dependency-free Python helper for app metadata, blocking generation and knowledge operations, with credential-free request previews.
 - Byte-preserving copies of both supplied files, separated into knowledge sources and evaluation data.
 
-The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Dify Cloud is selected for live generation; a published Workflow and app key must be configured. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
+The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Self-hosted local Dify is selected for live generation; a published Workflow and app key must be configured. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
 
 [Harness Evals](https://github.com/harness/harness-evals) supplies real `Golden`, `EvalCase`, metric and `Score` execution. OpenAI Decisions supplies optional semantic judging. Every final recommendation is **ship** or **hold off**. Only scores in **[0.70, 0.80)** permit **one** corrective response attempt; at least **0.80** also requires every grounding/relevance gate to pass. No score or no improvement means hold off. See [scoring policy](docs/SCORING_POLICY.md). Current rubric drafts and judge calibration block production delivery.
 
 ## Architecture and stack
 
-The application boundary is browser → Python HTTP backend → local approved retrieval or Dify Cloud Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
+The application boundary is browser → Python HTTP backend → local approved retrieval or local Dify Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
 
 The inspected upstream research snapshot is `langgenius/dify` commit `5fe7f018764e94aefa06f098a23e28a55d6b4e18`. That is research provenance, not a deployment recommendation. Select a release and verify feature/API compatibility before adoption; see the resource map.
 
@@ -41,13 +41,13 @@ make check PYTHON=.venv/bin/python
 .venv/bin/python scripts/run_evaluations.py --source chatbot
 ```
 
-Use `.venv/bin/python -m backend.app.api.server` for local development without Docker. Manage the standing container with `docker compose logs --tail=100 ticket-assistant` and `docker compose down`. Rebuild after source changes. See [quickstart](starter-kit/QUICKSTART.md), [environment variables](starter-kit/ENVIRONMENT.md), and [Dify Cloud setup](docs/DIFY_CLOUD_SETUP.md).
+Use `.venv/bin/python -m backend.app.api.server` for local development without Docker. Manage the standing container with `docker compose logs --tail=100 ticket-assistant` and `docker compose down`. Rebuild after source changes. See [quickstart](starter-kit/QUICKSTART.md), [environment variables](starter-kit/ENVIRONMENT.md), and [local Dify setup](docs/DIFY_LOCAL_SETUP.md).
 
 Tests verify software behavior and score boundaries using controlled judge fixtures. Offline CSV runs assess explicit regressions and source integrity. Neither proves semantic resolution quality or the 95% product target. Live Dify/OpenAI verification requires keys.
 
 ## Configuration and commands
 
-The web application and evaluation CLI centrally load local `.env`; process environment values override it. The standalone Dify helper reads only process environment, not `.env` automatically. Use `.env.example` as a configuration template for the consuming project's centralized environment loader or export variables in your shell. `DIFY_API_BASE_URL` defaults to `https://api.dify.ai/v1`; `DIFY_TIMEOUT` defaults to 100 seconds. Live app commands require `DIFY_APP_API_KEY`; live knowledge commands require the separate `DIFY_KNOWLEDGE_API_KEY`. Live generation requires `DIFY_USER` or `--user`.
+The web application and evaluation CLI centrally load local `.env`; process environment values override it. The standalone Dify helper reads only process environment, not `.env` automatically. Use `.env.example` as a configuration template for the consuming project's centralized environment loader or export variables in your shell. `DIFY_API_BASE_URL` defaults to `http://localhost/v1`; Compose overrides it with `DIFY_DOCKER_API_BASE_URL` (default `http://host.docker.internal/v1`); `DIFY_TIMEOUT` defaults to 100 seconds. Live app commands require `DIFY_APP_API_KEY`; live knowledge commands require the separate `DIFY_KNOWLEDGE_API_KEY`. Live generation requires `DIFY_USER` or `--user`.
 
 ```sh
 python3 scripts/dify_api.py --help
@@ -75,7 +75,7 @@ See [adoption guidance](docs/ADOPTION.md) for integration steps. Native Dify age
 .agents/skills/          Codex skill entrypoints, references and UI metadata
 agents/workers/          Portable role briefs
 docs/                   Guidelines, resource map and adoption instructions
-backend/app/            API, configuration, retrieval and Cloud adapter
+backend/app/            API, configuration, retrieval and Dify adapter
 frontend/src/           Static ticket workspace and evaluation dashboard
 knowledge/sources/      Approved guide and narrow transport supplement
 shared/                 Canonical contracts, schemas and examples
@@ -88,4 +88,4 @@ tests/                  Unit, local HTTP integration and CLI tests
 
 ## Known limitations and next steps
 
-Configure a published Dify Cloud Workflow and its app key locally; configure OpenAI access to measure semantic scores. Adjudicate the case drafts, calibrate the judge, then test a fresh holdout before approving delivery. The basic lexical router cannot establish semantic completeness for multi-issue tickets. The full structured concern-extraction/retrieval-repair design remains documented in `docs/HARNESS_DESIGN.md`; the current correction path passes evidence-anchoring feedback to the configured Workflow. No automatic ticket delivery is implemented.
+Configure a published local Dify Workflow and its app key locally; configure OpenAI access to measure semantic scores. Adjudicate the case drafts, calibrate the judge, then test a fresh holdout before approving delivery. The basic lexical router cannot establish semantic completeness for multi-issue tickets. The full structured concern-extraction/retrieval-repair design remains documented in `docs/HARNESS_DESIGN.md`; the current correction path passes evidence-anchoring feedback to the configured Workflow. No automatic ticket delivery is implemented.

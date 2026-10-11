@@ -1,6 +1,6 @@
 # Project guidelines: Dify support RAG assistant
 
-Maintained baseline: 2026-10-11. Status: basic local chatbot and Harness Evals runner implemented, with a two-assistant UI; software, container, browser and scoped accessibility checks are complete; live Dify Cloud verification requires a configured app key. The full reasoning harness remains the target design. Start with the [solution proposal](SOLUTION_PROPOSAL.md), then the [harness design](HARNESS_DESIGN.md), [evaluation plan](EVALUATION_PLAN.md), and [scoring policy](SCORING_POLICY.md).
+Maintained baseline: 2026-10-11. Status: basic local chatbot and Harness Evals runner implemented, with a two-assistant UI; software, container, browser and scoped accessibility checks are complete; live local Dify verification requires a running instance, published Workflow and configured app key. The full reasoning harness remains the target design. Start with the [solution proposal](SOLUTION_PROPOSAL.md), then the [harness design](HARNESS_DESIGN.md), [evaluation plan](EVALUATION_PLAN.md), and [scoring policy](SCORING_POLICY.md).
 
 ## Purpose and current scope
 
@@ -128,6 +128,6 @@ Use the existing project's backend to call the published app's Service API; keep
 
 Prefer existing Dify provider/tool integrations for the first slice. No custom plugin, autonomous native agent, ticketing-system writeback or billing-action tool is required by these files. Source code and native Dify skills should be reused only where they materially help the workflow and match the selected release.
 
-Dify Cloud is selected, with credentials configured locally in `.env`. Before live deployment, configure the published workflow, generation/embedding models and human escalation destination. Sending customer messages or modifying live accounts requires explicit authorization. Local analysis and reusable tooling can proceed independently.
+Self-hosted local Dify is selected, with credentials configured locally in `.env`. Native calls use `http://localhost/v1`; Docker calls use `http://host.docker.internal/v1`. The separate Dify deployment and local Workflow must be initialized before live generation. Before live deployment, configure the published workflow, generation/embedding models and human escalation destination. Sending customer messages or modifying live accounts requires explicit authorization. Local analysis and reusable tooling can proceed independently.
 
 When changing the project, update this document's date, provenance, decisions and per-ticket judgments. Keep factual sources and runtime evidence linked. If product documentation changes, re-index and re-run the affected reviewed cases before accepting the new behavior.

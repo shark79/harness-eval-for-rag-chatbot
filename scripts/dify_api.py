@@ -200,20 +200,25 @@ def make_call(args: argparse.Namespace, env: Mapping[str, str]) -> Call:
     return Call("POST", endpoint, body, key)
 
 
-def configuration(args: argparse.Namespace, env: Mapping[str, str]) -> tuple[str, float]:
-    """Resolve a bounded timeout and validated base URL without exposing secrets."""
-    base = args.base_url or env.get("DIFY_API_BASE_URL", "https://api.dify.ai/v1")
-    if len(base) > 2048 or any(character.isspace() for character in base):
+def validate_base_url(base: str, allow_insecure_http: bool = False) -> str:
+    """Validate Cloud or self-hosted API URLs without exposing their contents."""
+    if len(base) > 2048 or any(character.isspace() or ord(character) < 32 or ord(character) == 127 for character in base):
         raise DifyError("Invalid Service API base URL.")
     try:
         parts = urlsplit(base)
         port = parts.port
     except ValueError:
         raise DifyError("Invalid Service API base URL.") from None
-    if parts.scheme not in ("http", "https") or not parts.hostname or parts.username is not None or parts.password is not None or parts.query or parts.fragment or not parts.path.rstrip("/").endswith("/v1") or (port is not None and port == 0):
+    if parts.scheme not in ("http", "https") or not parts.hostname or parts.username is not None or parts.password is not None or "?" in base or "#" in base or not parts.path.removesuffix("/").endswith("/v1") or port == 0:
         raise DifyError("Base URL must be HTTP(S), end in /v1, and exclude credentials, query and fragment.")
-    if parts.scheme == "http" and parts.hostname not in ("localhost", "127.0.0.1", "::1") and not args.allow_insecure_http:
+    if parts.scheme == "http" and parts.hostname not in ("localhost", "127.0.0.1", "::1", "host.docker.internal") and not allow_insecure_http:
         raise DifyError("Remote HTTP requires --allow-insecure-http; prefer HTTPS.")
+    return base.rstrip("/")
+
+
+def configuration(args: argparse.Namespace, env: Mapping[str, str]) -> tuple[str, float]:
+    """Resolve a bounded timeout and validated base URL without exposing secrets."""
+    base = validate_base_url(args.base_url or env.get("DIFY_API_BASE_URL", "http://localhost/v1"), args.allow_insecure_http)
     try:
         timeout = float(args.timeout or env.get("DIFY_TIMEOUT", "100"))
     except ValueError:

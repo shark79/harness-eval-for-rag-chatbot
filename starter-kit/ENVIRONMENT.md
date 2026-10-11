@@ -5,7 +5,8 @@ The backend centrally loads the root `.env`; exported process environment overri
 | Variable | Default | Required |
 |---|---|---|
 | RAG_MODE | extractive | `extractive` or `dify`; live mode never silently falls back |
-| DIFY_API_BASE_URL | https://api.dify.ai/v1 | Selected Dify Cloud endpoint |
+| DIFY_API_BASE_URL | http://localhost/v1 | Local Dify endpoint for native commands |
+| DIFY_DOCKER_API_BASE_URL | http://host.docker.internal/v1 | Compose overrides DIFY_API_BASE_URL with this host-accessible endpoint |
 | DIFY_APP_API_KEY | empty | For `RAG_MODE=dify`, the published Workflow's app key |
 | DIFY_INPUT_NAME | ticket_text | Workflow ticket input name |
 | DIFY_KNOWLEDGE_API_KEY | empty | Only for separate toolkit knowledge commands |
@@ -21,3 +22,5 @@ The backend centrally loads the root `.env`; exported process environment overri
 Dify Workflow outputs must include `answer`, `category`, `disposition`, `evidence` and `citations`. Evidence entries require `evidence_id`, `source_id`, `section_id`, `excerpt`, `source_revision`; every excerpt must occur in a matching approved source revision. Citations identify returned evidence and must match any repeated evidence fields. The adapter accepts JSON arrays or JSON-serialized arrays. The `answered` disposition requires evidence and citations. If supporting evidence is unavailable, return `needs_clarification` or `escalated`.
 
 The optional `evaluation_feedback` Workflow input carries corrective feedback on the single allowed generation retry. The ticket text stays unchanged. Set up this input before enabling live corrective generation.
+
+The selected Dify service is self-hosted locally, separate from the ticket demo on port 8080. If Dify publishes another port (for example 8081), set both URLs to that port: `http://localhost:8081/v1` and `http://host.docker.internal:8081/v1`. Compose adds the host gateway alias for container access. Cloud credentials do not carry over to a local workspace; create a local Workflow app key. See [local Dify setup](../docs/DIFY_LOCAL_SETUP.md).

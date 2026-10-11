@@ -8,3 +8,6 @@
 - **Dify evidence rejected:** inspect the Workflow outputs. Source IDs, section IDs, excerpts and revisions must match `shared/contracts/evidence-sources.json`; baseline ticket answers are never approved knowledge.
 - **Scores say Not run and every response is held:** offline mode is deliberate. Configure `EVAL_MODE=decisions` and `OPENAI_API_KEY` for real semantic scoring. Thresholds require calibration before production release.
 - **409 evaluation already running:** wait for the active evaluation; batch and interactive judging share a local execution lock.
+
+- **Cannot connect to local Dify:** confirm the separate Dify Compose stack is running and publishes its nginx port. Use `http://localhost/v1` for native commands and `http://host.docker.internal/v1` inside the ticket container; update both URLs if the host port differs.
+- **Local Dify rejects a Cloud key:** create a key in the published Workflow of the local workspace; Cloud app keys are not transferred.

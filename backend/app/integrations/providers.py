@@ -1,4 +1,4 @@
-"""Dify Cloud adapter reusing the toolkit's bounded, redirect-safe transport."""
+"""Dify Cloud and self-hosted adapter reusing the toolkit's bounded, redirect-safe transport."""
 from typing import Any
 from backend.app.config.settings import Settings
 from scripts.dify_api import Call, DifyError, redact, request

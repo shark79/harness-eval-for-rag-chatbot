@@ -44,7 +44,7 @@ class PreviewTests(unittest.TestCase):
         result = invoke("--dry-run", "workflow-run")
         self.assertEqual(result.returncode, 0, result.stderr)
         preview = json.loads(result.stdout)
-        self.assertEqual(preview["url"], "https://api.dify.ai/v1/workflows/run")
+        self.assertEqual(preview["url"], "http://localhost/v1/workflows/run")
         self.assertEqual(preview["method"], "POST")
         self.assertEqual(preview["body"], {"inputs": {}, "response_mode": "blocking", "user": "preview-user"})
 
@@ -60,8 +60,21 @@ class PreviewTests(unittest.TestCase):
             with self.subTest(arguments=arguments):
                 result = invoke("--dry-run", *arguments)
                 self.assertEqual(result.returncode, 0, result.stderr)
-                self.assertEqual(json.loads(result.stdout)["url"], "https://api.dify.ai/v1" + suffix)
+                self.assertEqual(json.loads(result.stdout)["url"], "http://localhost/v1" + suffix)
                 self.assertEqual(json.loads(result.stdout)["method"], "GET")
+
+    def test_local_docker_endpoint_and_https_cloud_are_supported(self) -> None:
+        for base in ["http://localhost/v1", "http://127.0.0.1:8081/v1/", "http://host.docker.internal:8081/v1", "https://api.dify.ai/v1", "https://example.com/dify/v1"]:
+            with self.subTest(base=base):
+                result = invoke("--dry-run", "--base-url", base, "info")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(json.loads(result.stdout)["url"], base.rstrip("/") + "/info")
+
+    def test_wrong_api_path_and_deceptive_local_hosts_are_rejected(self) -> None:
+        for base in ["http://host.docker.internal.evil/v1", "http://localhost.evil/v1", "http://127.0.0.2/v1", "http://localhost:0/v1", "http://localhost:65536/v1", "http://localhost/console", "http://localhost/v1//", "http://localhost/v1?", "http://localhost/v1#"]:
+            with self.subTest(base=base):
+                result = invoke("--dry-run", "--base-url", base, "info")
+                self.assertEqual(result.returncode, 2)
 
     def test_payload_file_preserves_complex_inputs(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -77,7 +90,7 @@ class PreviewTests(unittest.TestCase):
         for command, endpoint in [("chat", "/chat-messages"), ("completion", "/completion-messages")]:
             result = invoke("--dry-run", "--user", "bob", command, "--query", "hello")
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(result.stdout)["url"], "https://api.dify.ai/v1" + endpoint)
+            self.assertEqual(json.loads(result.stdout)["url"], "http://localhost/v1" + endpoint)
             self.assertEqual(json.loads(result.stdout)["body"]["query"], "hello")
         result = invoke("--dry-run", "knowledge-retrieve", DATASET, "--query", "hello")
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -194,6 +207,19 @@ class LocalApiTests(unittest.TestCase):
         method, path, authorization, raw = self.recorded[0]
         self.assertEqual((method, path, authorization), ("POST", "/v1/workflows/run", "Bearer app-secret"))
         self.assertEqual(json.loads(raw), {"inputs": {"question": "hello"}, "response_mode": "blocking", "user": "alice"})
+
+    def test_runtime_workflow_uses_local_settings_and_keeps_output_contract(self) -> None:
+        from backend.app.config.settings import Settings
+        from backend.app.integrations.providers import workflow_answer
+
+        type(self).response = json.dumps({"data": {"status": "succeeded", "outputs": {"answer": "Grounded answer", "category": "api_keys", "disposition": "answered", "evidence": "[]", "citations": "[]"}}}).encode()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {"DIFY_API_BASE_URL": self.base, "DIFY_APP_API_KEY": "app-secret", "RAG_MODE": "dify"}, clear=True):
+            settings = Settings.load(Path(directory))
+            output = workflow_answer(settings, "Where is my app API key?", "Re-anchor claims to documentation.")
+        self.assertEqual(output, {"answer": "Grounded answer", "category": "api_keys", "disposition": "answered", "evidence": [], "citations": []})
+        method, path, authorization, raw = self.recorded[0]
+        self.assertEqual((method, path, authorization), ("POST", "/v1/workflows/run", "Bearer app-secret"))
+        self.assertEqual(json.loads(raw), {"inputs": {"ticket_text": "Where is my app API key?", "evaluation_feedback": "Re-anchor claims to documentation."}, "response_mode": "blocking", "user": "ticket-chat-local"})
 
     def test_workflow_failed_200_is_failure_and_preserves_json(self) -> None:
         for status in ["failed", "partial-succeeded", "stopped", "paused", "running"]:

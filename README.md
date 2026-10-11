@@ -1,4 +1,4 @@
-# Dify project toolkit
+# Harness Eval for RAG Chatbot
 
 A documentation-based ticket chatbot and an independent Harness Evals dashboard that explain whether an answer should **Ship** or **Hold off**.
 

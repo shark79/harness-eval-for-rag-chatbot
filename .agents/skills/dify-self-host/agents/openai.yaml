@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dify Self-Host"
+  short_description: "Prepare and verify pinned Dify deployments"
+  default_prompt: "Use $dify-self-host to prepare or troubleshoot this project's pinned Dify deployment."

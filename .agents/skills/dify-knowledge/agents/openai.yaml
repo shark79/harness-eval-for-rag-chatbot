@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dify Knowledge"
+  short_description: "Build and evaluate Dify ingestion and retrieval"
+  default_prompt: "Use $dify-knowledge to configure and evaluate grounded retrieval for this project."

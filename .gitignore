@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+# Attached originals remain in place; tracked copies live in knowledge/ and evals/.
+/Constructed fictional product documentation for the RAG knowledge base.md
+/Constructed fictional support ticket sample with RAG assistant answers.csv

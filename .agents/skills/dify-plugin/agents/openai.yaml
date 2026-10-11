@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dify Plugin"
+  short_description: "Develop and validate version-aware Dify plugins"
+  default_prompt: "Use $dify-plugin to build and package the smallest plugin this project needs."

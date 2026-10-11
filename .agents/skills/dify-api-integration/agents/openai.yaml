@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dify API Integration"
+  short_description: "Connect backends to published Dify app APIs"
+  default_prompt: "Use $dify-api-integration to wire this backend to the correct published Dify app API."

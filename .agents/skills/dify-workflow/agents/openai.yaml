@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dify Workflow"
+  short_description: "Design flows and validate versioned Dify DSL"
+  default_prompt: "Use $dify-workflow to design and validate a Dify flow for this project's golden path."

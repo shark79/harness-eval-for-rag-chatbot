@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "status": "design",
+  "sources": [
+    {
+      "id": "product_guide",
+      "path": "knowledge/sources/product-guide.md",
+      "kind": "fictional_product_guide",
+      "sha256": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110",
+      "section_ids": [
+        "workspace_api_keys",
+        "model_providers",
+        "rag_pipeline",
+        "billing_plans"
+      ],
+      "policy": "Fictional guide governs demo policy; supplement supplies HTTP Bearer transport only."
+    },
+    {
+      "id": "api_transport_supplement",
+      "path": "knowledge/sources/api-transport-supplement.md",
+      "kind": "official_transport_supplement",
+      "sha256": "2d17e31b5d1129359b46a107284bab197e3002329ae19be9aeaec278dc247078",
+      "section_ids": [
+        "http_authorization"
+      ],
+      "policy": "Fictional guide governs demo policy; supplement supplies HTTP Bearer transport only."
+    }
+  ]
+}

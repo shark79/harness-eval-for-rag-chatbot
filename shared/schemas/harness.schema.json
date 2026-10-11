@@ -1,0 +1,594 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Support harness completed-attempt design contract",
+  "description": "Draft internal contract, not a Dify DSL or direct OpenAI request schema. Application validates relationships and conditional state rules separately. Root describes a completed attempt; stage contracts are in $defs.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "ticket": {
+      "$ref": "#/$defs/ticket"
+    },
+    "understanding": {
+      "$ref": "#/$defs/understanding"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "draft": {
+      "$ref": "#/$defs/draft"
+    },
+    "evaluation": {
+      "$ref": "#/$defs/evaluation"
+    },
+    "repair": {
+      "$ref": "#/$defs/repair"
+    },
+    "control": {
+      "$ref": "#/$defs/control"
+    }
+  },
+  "required": [
+    "schema_version",
+    "ticket",
+    "understanding",
+    "evidence",
+    "draft",
+    "evaluation",
+    "repair",
+    "control"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ticket": {
+      "type": "object",
+      "properties": {
+        "ticket_id": {
+          "type": "string"
+        },
+        "ticket_text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ticket_id",
+        "ticket_text"
+      ],
+      "additionalProperties": false
+    },
+    "span": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "text",
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "subticket": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "concern": {
+          "type": "string"
+        },
+        "intent": {
+          "type": "string"
+        },
+        "entity_scope": {
+          "type": "string",
+          "enum": [
+            "dify_app",
+            "dify_dataset",
+            "model_provider",
+            "workspace",
+            "knowledge_pipeline",
+            "billing",
+            "unknown"
+          ]
+        },
+        "evidence_spans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          }
+        },
+        "negations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retrieval_queries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "missing_information": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "concern",
+        "intent",
+        "entity_scope",
+        "evidence_spans",
+        "negations",
+        "constraints",
+        "retrieval_queries",
+        "missing_information"
+      ],
+      "additionalProperties": false
+    },
+    "understanding": {
+      "type": "object",
+      "properties": {
+        "normalized_ticket": {
+          "type": "string"
+        },
+        "primary_category": {
+          "type": "string",
+          "enum": [
+            "api_keys",
+            "account_workspace",
+            "model_providers",
+            "rag_pipeline",
+            "billing_plans",
+            "unknown"
+          ]
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "api_keys",
+              "account_workspace",
+              "model_providers",
+              "rag_pipeline",
+              "billing_plans",
+              "unknown"
+            ]
+          }
+        },
+        "subtickets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/subticket"
+          }
+        },
+        "sentiment": {
+          "type": "string",
+          "enum": [
+            "neutral",
+            "positive",
+            "frustrated",
+            "unclear"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "unspecified",
+            "routine",
+            "blocking",
+            "urgent_claimed"
+          ]
+        },
+        "ambiguity_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "normalized_ticket",
+        "primary_category",
+        "topics",
+        "subtickets",
+        "sentiment",
+        "urgency",
+        "ambiguity_reason"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "evidence_id": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "section_id": {
+          "type": "string"
+        },
+        "source_revision": {
+          "type": "string"
+        },
+        "source_kind": {
+          "type": "string",
+          "enum": [
+            "fictional_product_guide",
+            "official_transport_supplement"
+          ]
+        },
+        "excerpt": {
+          "type": "string"
+        },
+        "retrieved_for_subticket_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source_id",
+        "section_id",
+        "source_revision",
+        "source_kind",
+        "excerpt",
+        "retrieved_for_subticket_ids"
+      ],
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "properties": {
+        "evidence_id": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "section_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source_id",
+        "section_id"
+      ],
+      "additionalProperties": false
+    },
+    "claim_support": {
+      "type": "object",
+      "properties": {
+        "claim_id": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "subticket_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "claim_id",
+        "claim",
+        "subticket_ids",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    },
+    "draft": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "answered",
+            "needs_clarification",
+            "partial_escalation",
+            "escalated",
+            "temporarily_unavailable"
+          ]
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/citation"
+          }
+        },
+        "claim_support": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim_support"
+          }
+        },
+        "addressed_subticket_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unanswered_subticket_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "follow_up_question": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "escalation_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "answer",
+        "disposition",
+        "citations",
+        "claim_support",
+        "addressed_subticket_ids",
+        "unanswered_subticket_ids",
+        "follow_up_question",
+        "escalation_reason"
+      ],
+      "additionalProperties": false
+    },
+    "failure": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "wrong_intent",
+            "wrong_key_scope",
+            "insufficient_retrieval",
+            "unsupported_claim",
+            "irrelevant_answer",
+            "missing_subquestion",
+            "invalid_citation",
+            "unsupported_configuration",
+            "needs_customer_information",
+            "schema_failure",
+            "provider_failure",
+            "decision_refusal",
+            "judge_disagreement"
+          ]
+        },
+        "subticket_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "claim_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detail": {
+          "type": "string"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suggested_action": {
+          "type": "string",
+          "enum": [
+            "reanalyze",
+            "expand_retrieval",
+            "redraft",
+            "clarify",
+            "escalate",
+            "stop"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "subticket_id",
+        "claim_id",
+        "detail",
+        "evidence_ids",
+        "suggested_action"
+      ],
+      "additionalProperties": false
+    },
+    "evaluation": {
+      "type": "object",
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "grounding_pass": {
+          "type": "boolean"
+        },
+        "relevance_pass": {
+          "type": "boolean"
+        },
+        "scope_pass": {
+          "type": "boolean"
+        },
+        "completeness_pass": {
+          "type": "boolean"
+        },
+        "citation_pass": {
+          "type": "boolean"
+        },
+        "failure_reasons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/failure"
+          }
+        },
+        "approved_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "passed",
+        "grounding_pass",
+        "relevance_pass",
+        "scope_pass",
+        "completeness_pass",
+        "citation_pass",
+        "failure_reasons",
+        "approved_evidence_ids"
+      ],
+      "additionalProperties": false
+    },
+    "repair": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "reanalyze",
+            "expand_retrieval",
+            "redraft",
+            "clarify",
+            "escalate",
+            "stop"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "query_changes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "targets",
+        "query_changes",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "control": {
+      "type": "object",
+      "properties": {
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "max_attempts": {
+          "const": 3
+        },
+        "evidence_revision": {
+          "type": "string"
+        },
+        "terminal_state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "clarification",
+            "review",
+            "unavailable"
+          ]
+        }
+      },
+      "required": [
+        "attempt",
+        "max_attempts",
+        "evidence_revision",
+        "terminal_state"
+      ],
+      "additionalProperties": false
+    },
+    "export_row": {
+      "type": "object",
+      "properties": {
+        "ticket_text": {
+          "type": "string"
+        },
+        "assistant_answer": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "api_keys",
+            "account_workspace",
+            "model_providers",
+            "rag_pipeline",
+            "billing_plans",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "ticket_text",
+        "assistant_answer",
+        "category"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

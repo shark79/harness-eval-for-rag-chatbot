@@ -1,0 +1,33 @@
+{
+  "normalized_ticket": "I published a chatbot app and want to call it from my backend. Where do I get its API key?",
+  "primary_category": "api_keys",
+  "topics": [
+    "api_keys"
+  ],
+  "subtickets": [
+    {
+      "id": "s1",
+      "concern": "Obtain the Dify app API key for calling a published chatbot from a backend.",
+      "intent": "key_creation_location",
+      "entity_scope": "dify_app",
+      "evidence_spans": [
+        {
+          "text": "published my first chatbot app",
+          "start": 11,
+          "end": 41
+        }
+      ],
+      "negations": [],
+      "constraints": [
+        "Published Dify chatbot; backend caller."
+      ],
+      "retrieval_queries": [
+        "Dify published chatbot app API Access Create new Secret Key key scope"
+      ],
+      "missing_information": []
+    }
+  ],
+  "sentiment": "positive",
+  "urgency": "unspecified",
+  "ambiguity_reason": null
+}

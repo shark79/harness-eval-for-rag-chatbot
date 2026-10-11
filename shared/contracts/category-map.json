@@ -1,0 +1,124 @@
+{
+  "version": "0.1.0",
+  "status": "design",
+  "reviewed_on": "2026-10-11",
+  "source_id": "product_guide",
+  "source_path": "knowledge/sources/product-guide.md",
+  "routing_policy": {
+    "multi_label": true,
+    "split_ticket_into_concerns": true,
+    "keywords_are_evidence_not_rules": true,
+    "preserve_raw_input": true,
+    "preserve_negation_entities_errors_and_constraints": true,
+    "sentiment_changes_tone_not_category": true,
+    "category_is_not_disposition": true,
+    "hard_category_filter_before_evidence_verification": false,
+    "retrieval_scope": "approved_corpus",
+    "allow_cross_section_expansion": true,
+    "confidence_policy": "Model self-reported confidence and retrieval scores are not calibrated probabilities of correctness. Tune abstention and routing on adjudicated development cases; report results on separate holdout cases.",
+    "primary_category_policy": "Use the first explicit actionable concern in ticket order as primary; retain every distinct secondary category. If no actionable concern can be identified, use unknown. Original CSV category is provenance, not routing truth."
+  },
+  "sections": [
+    {"id": "workspace_api_keys", "heading": "1. Workspace and API Key Setup"},
+    {"id": "model_providers", "heading": "2. Connecting a Model Provider"},
+    {"id": "rag_pipeline", "heading": "3. Building a Basic RAG Pipeline (Knowledge Pipeline)"},
+    {"id": "billing_plans", "heading": "4. Billing, Plans, and Limits"}
+  ],
+  "categories": [
+    {
+      "id": "api_keys",
+      "scope": "Dify app/dataset API access, key creation, key scope, authorization errors, rotation, and app API usage caps. Provider credential configuration belongs to model_providers.",
+      "section_ids": ["workspace_api_keys", "billing_plans"],
+      "keywords": ["API key", "published chatbot", "backend", "app endpoint", "dataset API", "401 Unauthorized", "app-", "secret key", "rate limit", "API calls"],
+      "contextual_signals": ["The requested key is for calling a published app or Knowledge API", "Authentication succeeds against one object and fails against another", "A monthly cap question concerns app API calls rather than model message credits"],
+      "contrastive_examples": [
+        {"text": "I published a chatbot and want to call it from my backend. Where is its API key?", "category": "api_keys", "key_kind": "dify_app"},
+        {"text": "My chatbot key returns 401 when uploading via the dataset API.", "category": "api_keys", "key_kind": "dify_dataset"},
+        {"text": "How do I connect my own OpenAI API key instead of built-in credits?", "category": "model_providers", "key_kind": "model_provider"},
+        {"text": "Does the free plan cap monthly API calls?", "category": "api_keys", "secondary_categories": ["billing_plans"]}
+      ],
+      "exclusions": ["OpenAI, Azure, Anthropic or other provider credentials used to run a model", "Model response credits when the concern is not app API call quotas", "Unsupported workflow/plugin implementation instructions"],
+      "cross_section_triggers": {"billing_plans": ["Sandbox cap", "monthly API calls", "upgrade removes documented cap"]}
+    },
+    {
+      "id": "account_workspace",
+      "scope": "Workspace ownership, roles, member invitation and access. SSO/audit/compliance requests are recognizable topics but require scope checks and specialist escalation for undocumented configuration.",
+      "section_ids": ["workspace_api_keys", "billing_plans"],
+      "keywords": ["workspace", "members", "teammate", "invite", "role", "owner", "admin", "SSO", "SAML", "audit logs", "SOC 2"],
+      "contextual_signals": ["The object is a member, role or workspace access", "Enterprise capabilities are asked about without configuration coverage in the guide"],
+      "contrastive_examples": [
+        {"text": "How do I invite a teammate on Professional?", "category": "account_workspace", "secondary_categories": ["billing_plans"]},
+        {"text": "How much is Team?", "category": "billing_plans"},
+        {"text": "Where do I configure SAML login?", "category": "account_workspace", "coverage": "unsupported_configuration"}
+      ],
+      "exclusions": ["Published app or dataset API authentication", "Enterprise SSO/SAML setup, audit export formats or certification guarantees as answerable instructions"],
+      "cross_section_triggers": {"billing_plans": ["member cap", "downgrade access", "Enterprise positioning"]}
+    },
+    {
+      "id": "model_providers",
+      "scope": "Connecting model credentials/plugins, selecting app models, hosted credits versus provider billing and variable model credit usage. Custom model details require evidence or clarification.",
+      "section_ids": ["model_providers", "billing_plans"],
+      "keywords": ["OpenAI", "Anthropic", "Azure OpenAI", "model provider", "Marketplace", "deployment name", "endpoint URL", "own model", "hosted credits", "credit burn"],
+      "contextual_signals": ["The requested key configures the model provider rather than authenticating a Dify app endpoint", "The concern compares Dify-hosted model credits with direct provider usage", "Credit consumption varies by selected model"],
+      "contrastive_examples": [
+        {"text": "Use our existing Azure OpenAI deployment with Dify.", "category": "model_providers", "key_kind": "model_provider"},
+        {"text": "Call my published Dify chatbot from a backend with an API key.", "category": "api_keys", "key_kind": "dify_app"},
+        {"text": "I connected Anthropic, and retrieval also returns zero chunks.", "categories": ["model_providers", "rag_pipeline"], "causation": "not_established"}
+      ],
+      "exclusions": ["Dify app/dataset endpoint access keys", "Treating provider connection timing as proof of a retrieval-propagation delay", "Enumerating custom runtime support absent from approved evidence"],
+      "cross_section_triggers": {"billing_plans": ["one-time Sandbox credits", "monthly allowance", "upgrade"], "rag_pipeline": ["separate retrieval symptom", "embedding/indexing configuration"]}
+    },
+    {
+      "id": "rag_pipeline",
+      "scope": "Knowledge ingestion, chunking, indexing, edits, hit testing, retrieval settings, missing chunks and upload troubleshooting; quota conditions also require billing evidence.",
+      "section_ids": ["rag_pipeline", "billing_plans"],
+      "keywords": ["knowledge base", "dataset", "upload", "General", "Parent-Child", "Q&A", "Economical", "High Quality", "embedding", "indexing", "Hit Testing", "zero chunks", "top_k", "score threshold", "rerank"],
+      "contextual_signals": ["The concern is retrieval or ingestion behavior rather than endpoint authorization", "Reported upload errors are not yet a confirmed quota diagnosis", "Document availability depends on completed indexing"],
+      "contrastive_examples": [
+        {"text": "Retrieval returns zero chunks for queries that used to work.", "category": "rag_pipeline"},
+        {"text": "Uploading through the dataset API returns 401 with my app key.", "category": "api_keys"},
+        {"text": "Upload fails and I want to reduce Team seats to save money mid-cycle.", "categories": ["rag_pipeline", "billing_plans"]}
+      ],
+      "exclusions": ["401 caused by key type mismatch is primarily API access", "Self-hosted deployment, custom plugin SDK or workflow features beyond documented retrieval settings", "Confirming account-specific upload causes without error and usage evidence"],
+      "cross_section_triggers": {"billing_plans": ["document count", "knowledge storage", "downgrade", "plan cap"], "workspace_api_keys": ["Knowledge API authentication also reported"]}
+    },
+    {
+      "id": "billing_plans",
+      "scope": "Workspace plan prices, quotas, credits renewal, payment methods, upgrades and downgrade effects. Mid-cycle proration and actual account state are not documented.",
+      "section_ids": ["billing_plans", "model_providers", "workspace_api_keys", "rag_pipeline"],
+      "keywords": ["Sandbox", "Professional", "Team", "Enterprise", "price", "subscription", "credits", "invoice", "bank transfer", "credit card", "storage", "documents", "downgrade", "mid-cycle"],
+      "contextual_signals": ["The concern is a plan entitlement, payment policy or subscription change", "Credit exhaustion alone does not identify a customer's plan or usage", "Team billing is per workspace in the fictional guide"],
+      "contrastive_examples": [
+        {"text": "How much does Team cost and what limits does it include?", "category": "billing_plans"},
+        {"text": "Why did model credit burn increase this week?", "category": "model_providers", "secondary_categories": ["billing_plans"]},
+        {"text": "billing???? not working fix now!!!", "category": "billing_plans", "coverage": "needs_clarification"}
+      ],
+      "exclusions": ["Confirming an actual charge, credit balance or cap breach without account telemetry", "Promising proration, Enterprise unlimited quotas, or undocumented feature entitlements", "Replacing fictional fixture prices/policies with current website facts"],
+      "cross_section_triggers": {"model_providers": ["bring your own key", "model-specific credit usage"], "workspace_api_keys": ["member access after downgrade"], "rag_pipeline": ["upload failure", "indexing versus quota"]}
+    },
+    {
+      "id": "unknown",
+      "scope": "No supported topic can be determined, conflicting context cannot identify the object/intent, or the request is outside the corpus. This is a routing fallback, not a mandatory escalation disposition.",
+      "section_ids": [],
+      "keywords": [],
+      "contextual_signals": ["No identifiable product operation or concern", "API key without enough context to determine app, dataset or provider", "Unrelated request"],
+      "contrastive_examples": [
+        {"text": "Where is the key?", "category": "unknown", "coverage": "needs_clarification"},
+        {"text": "What is tomorrow's weather?", "category": "unknown", "coverage": "out_of_scope"}
+      ],
+      "exclusions": ["Do not use unknown just because a known topic needs clarification or has undocumented configuration"],
+      "cross_section_triggers": {}
+    }
+  ],
+  "multi_topic_examples": [
+    {"ticket_id": "TCK-1006", "primary_category": "api_keys", "categories": ["api_keys", "billing_plans", "account_workspace"], "section_ids": ["billing_plans", "workspace_api_keys"], "concerns": ["app API rate-limit failure", "Team entitlement and SSO for 40 members"], "required_boundary": "Conditional quota explanation; SSO configuration/entitlement needs scope checks; no confirmed account diagnosis."},
+    {"ticket_id": "TCK-1015", "primary_category": "rag_pipeline", "categories": ["rag_pipeline", "billing_plans"], "section_ids": ["rag_pipeline", "billing_plans"], "concerns": ["knowledge upload failure", "reduce seats mid-cycle without losing data"], "required_boundary": "Ask for upload error; workspace billing does not establish per-seat savings; undocumented proration routes for review."},
+    {"ticket_id": "TCK-1021", "primary_category": "model_providers", "categories": ["model_providers", "rag_pipeline"], "section_ids": ["model_providers", "rag_pipeline"], "concerns": ["Anthropic provider configuration", "retrieval returns no chunks"], "required_boundary": "Do not infer causal propagation delay from temporal co-occurrence."},
+    {"ticket_id": "TCK-1016", "primary_category": "api_keys", "categories": ["api_keys", "billing_plans"], "section_ids": ["billing_plans"], "concerns": ["Sandbox monthly app API cap"], "required_boundary": "API call quotas are distinct from model message credits."}
+  ],
+  "transport_supplement_policy": {
+    "source_id": "api_transport_supplement",
+    "category_ids": ["api_keys"],
+    "scope": "Separately approved official Dify HTTP authorization transport evidence only. It must not override fictional key UI labels, scope, prices or plan policies."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "illustrative_design_example_not_model_run",
+  "ticket_id": "TCK-1001",
+  "input_source": "evals/datasets/support-tickets.csv",
+  "output_source": "User-requested example preserved from the baseline; not a measured or automatically certified gold answer.",
+  "expected_primary_category": "api_keys",
+  "required_source_ids": [
+    "product_guide",
+    "api_transport_supplement"
+  ],
+  "output_columns": [
+    "ticket_text",
+    "assistant_answer",
+    "category"
+  ],
+  "citation_policy": "Use structured internal claim/evidence links; customer-visible citations may be rendered when useful. Evidence stays in a trace sidecar so the CSV columns remain exact."
+}

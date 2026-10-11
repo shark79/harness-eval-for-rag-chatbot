@@ -1,0 +1,49 @@
+Ship · Score 0.930
+Ticket TCK-1001
+
+Hi, I just published my first chatbot app and I want to call it from my own backend. Where do I get an API key for it? -- Marcus
+
+Evaluated response
+
+To call your published chatbot app from your own backend, you need an App API key. You can create this key from your chatbot app's API Access panel inside the app builder by clicking Create new Secret Key. The key will be shown once, prefixed with 'app-', and you must store it immediately since it won’t be displayed again. Use this key as a Bearer token in the HTTP Authorization header when making backend API calls to your app. Make sure to keep the key secret and only use it on the backend.
+
+Why this decision
+
+Weighted quality score meets 0.80 and all mandatory gates pass; provisional shadow classification.
+
+Original score: 0.930. Final score: 0.930.
+
+Answer generation retried: No. Scoring retried: No.
+
+Dimensions, lowest score first
+
+factual correctness: 0.882 · weight 25% — Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis.
+
+category accuracy: 0.892 · weight 5% — The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label.
+
+grounding: 0.932 · weight 30% — All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit.
+
+completeness: 0.950 · weight 15% — Every requested concern is handled with actionable support or a necessary targeted clarification/escalation.
+
+clarity: 0.968 · weight 5% — The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose.
+
+concern relevance: 0.970 · weight 20% — The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys.
+
+Semantic evaluation: pass
+Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness.
+Supporting documentation
+product_guide / workspace_api_keys
+
+- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as "Monitoring → API Key") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.
+
+api_transport_supplement / http_authorization
+
+The official [Dify API guide](https://docs.dify.ai/en/api-reference/guides/get-started) documents sending the applicable API key as a Bearer token in the HTTP Authorization header. Make these calls from a backend so the key is not exposed in client code.
+
+product_guide / workspace_api_keys
+
+- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.
+
+product_guide / model_providers
+
+3. Enter the credentials the provider requires — typically an API key, and for Azure OpenAI, also the resource endpoint URL and deployment name.

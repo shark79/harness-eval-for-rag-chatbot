@@ -1,0 +1,44 @@
+Hold · Score 0.653
+Ticket TCK-1001
+
+Hi, I just published my first chatbot app and I want to call it from my own backend. Where do I get an API key for it? -- Marcus
+
+Evaluated response
+
+Hi Marcus, to call your published chatbot app from your backend, you need an App API key. You can create this key inside your chatbot app's builder interface by going to the API Access panel (sometimes labeled "Monitoring → API Key") and clicking "Create new Secret Key." The key will be shown once, prefixed with "app-", so make sure to store it securely since it won't be shown again. This App API key will authenticate calls specifically to your chatbot app endpoint. Do not use dataset keys or other keys, as they won't work for your app calls.
+
+Why this decision
+
+Held: semantic_supported, semantic_addresses_requested_concern, semantic_appropriate_disposition.
+
+Original score: 0.653. Final score: 0.653.
+
+Answer generation retried: No. Scoring retried: No.
+
+Dimensions, lowest score first
+
+factual correctness: 0.563 · weight 25% — Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis.
+
+category accuracy: 0.608 · weight 5% — The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label.
+
+clarity: 0.610 · weight 5% — The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose.
+
+completeness: 0.640 · weight 15% — Every requested concern is handled with actionable support or a necessary targeted clarification/escalation.
+
+grounding: 0.642 · weight 30% — All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit.
+
+concern relevance: 0.815 · weight 20% — The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys.
+
+Independent judge rejected mandatory supported gate.
+Independent judge rejected mandatory addresses_requested_concern gate.
+Independent judge rejected mandatory appropriate_disposition gate.
+Semantic evaluation: fail
+Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness.
+Supporting documentation
+product_guide / workspace_api_keys
+
+- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as "Monitoring → API Key") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.
+
+product_guide / workspace_api_keys
+
+- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.

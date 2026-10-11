@@ -1,0 +1,34 @@
+Ship · Score 0.991
+Ticket TCK-1011
+
+I'm getting a 401 Unauthorized when I try to call the dataset API to upload a document, but the same key works fine for my chatbot app. What's going on? -- Sam
+
+Evaluated response
+
+The 401 Unauthorized error occurs because the key you are using for the dataset API is actually an app key, which only works for your chatbot app and not for dataset API calls. Dataset API keys and app API keys are not interchangeable. To upload a document to the dataset API, you need to create a dataset API key from the dataset's detail page under the Service API panel. Use that dataset key for your document upload requests to avoid the 401 error.
+
+Why this decision
+
+Weighted quality score meets 0.80 and all mandatory gates pass; provisional shadow classification.
+
+Original score: 0.991. Final score: 0.991.
+
+Answer generation retried: No. Scoring retried: No.
+
+Dimensions, lowest score first
+
+category accuracy: 0.980 · weight 5% — The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label.
+
+clarity: 0.983 · weight 5% — The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose.
+
+completeness: 0.988 · weight 15% — Every requested concern is handled with actionable support or a necessary targeted clarification/escalation.
+
+grounding: 0.990 · weight 30% — All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit.
+
+factual correctness: 0.990 · weight 25% — Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis.
+
+concern relevance: 1.000 · weight 20% — The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys.
+
+Semantic evaluation: pass
+Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness.
+Supporting documentation

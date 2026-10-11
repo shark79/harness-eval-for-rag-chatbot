@@ -1,91 +1,136 @@
 # Dify project toolkit
 
-A ticket chatbot and separate Harness Evals dashboard for reviewing support answers against approved documentation.
+A documentation-based ticket chatbot and an independent Harness Evals dashboard that explain whether an answer should **Ship** or **Hold off**.
 
-The supplied fictional support dataset contains answers that invent or contradict product policy. The project uses approved product documentation for retrieval and the 26 tickets as a noisy baseline to review and evaluate. Start with [project guidelines](docs/PROJECT_GUIDELINES.md), which records source provenance, a ticket-by-ticket audit and proposed acceptance criteria.
+A convincing answer can still use the wrong API key, invent policy, or miss the customer's concern. This project retrieves approved documentation, generates a draft, then checks its evidence and relevance separately. The supplied fictional guide establishes demo policy; the 26-ticket CSV contains noisy answers to evaluate, not knowledge to memorize. Start with the [project guidelines](docs/PROJECT_GUIDELINES.md) and [recorded evaluation evidence](evals/evidence/README.md).
 
-## What is implemented
+## Review the complete flow
 
-- Five project-local skills: Workflow/Chatflow design, Service API integration, Knowledge/RAG, plugins and self-hosting under `.agents/skills/`.
-- Four portable worker briefs under `agents/workers/`; load them as role instructions rather than assuming automatic agent registration.
-- [Dify resource map](docs/RESOURCE_MAP.md), covering upstream source, docs, SDKs, native agent capabilities, plugins, Marketplace, MCP, deployment and compatibility.
-- `scripts/dify_api.py`, a dependency-free Python helper for app metadata, blocking generation and knowledge operations, with credential-free request previews.
-- Byte-preserving copies of both supplied files, separated into knowledge sources and evaluation data.
+1. In **RAG bot**, select a CSV ticket and click **Draft answer**. Inspect the answer and retrieved source passages.
+2. Click **Evaluate this response** to open **Eval bot**. Review its score, ranked dimensions, failed gates, citations and recommendation.
+3. A qualifying borderline answer receives one correction. The dashboard retains both attempts, initial/final scores and generation/scoring retry flags.
 
-The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Dify Cloud is selected for the live demo; a published Workflow and app key must be configured. The verified [Workflow export](agents/workflows/support-ticket-rag.yml) includes the retrieval, structured-output and correction-feedback bindings. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
+Ship is provisional eligibility, not authorization to contact a customer. No automatic ticket delivery is implemented; `delivery_approved=false` until human rubric approval and judge calibration.
 
-[Harness Evals](https://github.com/harness/harness-evals) supplies real `Golden`, `EvalCase`, metric and `Score` execution. OpenAI Decisions supplies optional semantic judging. Every final recommendation is **ship** or **hold off**. Only scores in **[0.70, 0.80)** permit **one** corrective response attempt; at least **0.80** also requires every grounding/relevance gate to pass. No score or no improvement means hold off. See [scoring policy](docs/SCORING_POLICY.md). Current rubric drafts and judge calibration block production delivery.
+## Architecture and runtime stack
 
-## Architecture and stack
+```mermaid
+flowchart LR
+    UI[Two-tab browser UI] --> API[Python HTTP backend]
+    API --> RAG[Dify Cloud RAG Workflow]
+    RAG --> KB[Approved knowledge sources]
+    RAG --> Draft[Validated draft and citations]
+    Draft --> Eval[Independent Harness Evals service]
+    Eval --> Judge[OpenAI Decisions judge]
+    Eval --> Result[Ship or Hold with evidence]
+    Eval -->|One qualifying correction| RAG
+```
 
-The application boundary is browser → Python HTTP backend → local approved retrieval or Dify Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
+| Component | Implemented technology |
+|---|---|
+| UI | Plain HTML, CSS and JavaScript; no frontend framework |
+| Backend/integrations | Python 3.12; standard-library HTTP server, `urllib`, `json`, `csv`, `hashlib` |
+| Generation | Published Dify Cloud Workflow; `gpt-4.1-mini` |
+| Retrieval | High Quality VECTOR, `text-embedding-3-small`, `qwen3-rerank`, Top K 5 |
+| Semantic evaluation | OpenAI Decisions REST API, `gpt-6-luna`; direct `urllib`, no OpenAI SDK |
+| Evaluation execution | `harness-evals==0.25.3` |
+| Contracts | JSON Schema documents plus Python boundary validators |
+| Operations/checks | Docker Compose, Make, Git, Python `unittest`, Node's built-in test runner |
 
-The inspected upstream research snapshot is `langgenius/dify` commit `5fe7f018764e94aefa06f098a23e28a55d6b4e18`. That is research provenance, not a deployment recommendation. Select a release and verify feature/API compatibility before adoption; see the resource map.
+Codex specialist agents and browser automation helped build and verify the project. They are development tools, not dependencies that execute customer requests.
 
-## Setup, run and verification
+### The six-node Dify Workflow
 
-From this repository directory:
+The [actual Workflow export](agents/workflows/support-ticket-rag.yml) implements:
+
+1. **User Input:** original `ticket_text`; optional diagnostic `evaluation_feedback`, maximum 8,000 characters.
+2. **Knowledge Retrieval:** query the raw ticket against the approved corpus, with vector retrieval and reranking.
+3. **Normalize Evidence:** accept only actual retrieved passages matching frozen approved paragraphs; attach stable evidence IDs, section IDs and source SHA-256 revisions.
+4. **LLM:** generate structured `answer`, `category`, `disposition`, and `cited_evidence_ids` from that evidence.
+5. **Resolve Citations:** reject invented IDs and resolve selected IDs to validated source records.
+6. **Output:** return `answer`, `category`, `disposition`, `evidence`, and `citations`.
+
+The corpus contains the fictional [product guide](knowledge/sources/product-guide.md) and a narrow [API transport supplement](knowledge/sources/api-transport-supplement.md). The supplement supports Bearer authorization/backend transport; it cannot override fictional policy. CSV answers stay outside the knowledge base. There is no separate live sentiment or keyword classifier: retrieval precedes the LLM's category selection. The local extractive fallback uses a simpler lexical router and quotes approved passages.
+
+## How the Eval bot grades an answer
+
+The judge receives the original ticket, drafted required/prohibited claims, acceptable dispositions, category taxonomy, answer/category/disposition and actual evidence. It sends ten named questions to `/v1/decisions`: six score questions and four predicates. Parsing rejects incomplete, duplicated, malformed or invalid judgments.
+
+| Dimension | Weight | Criterion |
+|---|---:|---|
+| Grounding | 30% | Substantive claims follow the supplied evidence |
+| Factual correctness | 25% | Documented conditions and policy remain correct; no invented diagnosis |
+| Concern relevance | 20% | Address the actual operation and entity, including credential scope |
+| Completeness | 15% | Handle every concern or clarify/escalate what evidence cannot resolve |
+| Category accuracy | 5% | Match the actual concern and bounded taxonomy |
+| Clarity | 5% | Direct, understandable and usable; no diagnostics or unrelated prose |
+
+Each score question has five ordered levels: **0** fails/contradicts; **1** major errors; **2** partially meets; **3** mostly meets with minor correction needed; **4** fully meets. [OpenAI Decisions](https://developers.openai.com/api/docs/guides/decisions) returns a probability-weighted level index, which can be fractional. Divide it by four to normalize to 0–1, then calculate:
+
+```text
+quality = .30×grounding + .25×correctness + .20×relevance
+        + .15×completeness + .05×category + .05×clarity
+```
+
+Four mandatory semantic predicates must each have probability **at least 0.90**: `supported`, `correct_scope`, `addresses_requested_concern`, and `appropriate_disposition`. Deterministic validators separately check source revision hashes, exact excerpt membership, citation references, output structure and explicit known regressions. Their binary rule score is **0 or 1**; 1 does not certify semantic correctness.
+
+Harness Evals creates a `Golden` containing draft expected claims/evidence, an `EvalCase` containing the actual answer, a custom `SafetyMetric` for rules and six `BaseMetric` implementations; `evaluate` produces `Score` records. These expectations are not approved gold. Individual metric thresholds of 0.80 are diagnostic; every dimension need not independently exceed 0.80. The Python [scoring policy](agents/evals/scoring_policy.json) applies the weighted score and mandatory gates:
+
+| Condition | Final behavior |
+|---|---|
+| Missing judge/invalid score/any failed gate | Hold off |
+| Score below 0.70 | Hold off immediately |
+| 0.70 ≤ score < 0.80, all gates pass | Exactly one correction, then Ship or Hold |
+| Score ≥ 0.80, all gates pass | Provisional Ship |
+
+A repeated unchanged answer, no improvement, or a correction still below 0.80 holds. Feedback is diagnostic data, never new facts or a target score; the rubric stays fixed. Evaluation is cached by draft ID to prevent judge rerolls. JSON/CSV/Markdown reports retain lowest-ranked dimensions, weights/contributions, gate failures, decision reasons, attempts and judge-call/retry counts. Reasons currently explain rubric criteria and failed gates; model-written freeform score explanations are not implemented.
+
+## Verified evidence and limits
+
+Marcus's app-key answer improved from **0.653 Hold to 0.930 Ship** after adding retrieved transport evidence. Sam's fresh dataset-key regression scored **0.991 Ship**; Priya's provider-setup answer scored **0.552 Hold** for missing steps. The 26 existing CSV answers yielded **7 Ship / 19 Hold**, including all eight known errors held. Baseline evaluation uses rubric reference evidence rather than runtime retrieval.
+
+A separately labelled scheduling fixture used synthetic **0.75** solely to exercise one correction: two real generations and judgments scored **0.9305 → 0.967375**, with feedback verified inside Dify's LLM trace. It is excluded from the benchmark; a naturally triggered live borderline retry remains unobserved. See [recorded evidence](evals/evidence/README.md). Checks passed: **93 Python tests, 10 frontend tests**, compilation, Docker build and container round-trip, including the submission archive build. These checks do not prove the 95% resolution target or production safety.
+
+## Setup, run and configuration
+
+Install Python, Node/npm and Docker. From this repository:
 
 ```sh
 make setup
-make build
-make up
 ```
 
-Open [Ticket desk](http://127.0.0.1:8080). In the RAG bot tab, select a CSV ticket and draft an answer. Inspect its sources, then click Evaluate this response to open the Eval bot tab. Review the recommendation, original/final scores, retry flags and citations. You can also run the 26-ticket suite against existing CSV answers or fresh chatbot answers. Offline evaluation displays actual rule checks and **unrun** semantic scores; responses remain held. Generated reports live under `evals/results/`.
+For live generation, import the Workflow export into your own Dify Cloud workspace, configure model providers, create/index both approved sources, bind Knowledge Retrieval to your knowledge base and publish. Preserve the guide upload filename `Constructed fictional product documentation for the RAG knowledge base.md` and supplement filename `api-transport-supplement.md`; normalization validates filenames. Follow the [Workflow instructions](docs/PROJECT_GUIDELINES.md#live-workflow-structured-output).
+
+Edit local `.env` with both API base URLs set to `https://api.dify.ai/v1`, `RAG_MODE=dify`, `EVAL_MODE=decisions`, your published `DIFY_APP_API_KEY`, and local `OPENAI_API_KEY`. The provider key saved inside Dify is separate from this local evaluator key. Keys remain server-side; never commit them. Live calls consume provider credits.
+
+```sh
+docker compose up -d --build
+```
+
+Open [Ticket desk](http://127.0.0.1:8080). Default `extractive`/`offline` modes work without keys; semantic scores remain unrun and all responses held. Inspect recorded reports for real scores without making live calls.
 
 ```sh
 make test PYTHON=.venv/bin/python
 make check PYTHON=.venv/bin/python
-.venv/bin/python scripts/run_evaluations.py --source baseline
-.venv/bin/python scripts/run_evaluations.py --source chatbot
+npm --prefix frontend run check
+make logs
+docker compose down
 ```
 
-Use `.venv/bin/python -m backend.app.api.server` for local development without Docker. Manage the standing container with `docker compose logs --tail=100 ticket-assistant` and `docker compose down`. Rebuild after source changes. See [quickstart](starter-kit/QUICKSTART.md), [environment variables](starter-kit/ENVIRONMENT.md), and [local Dify setup](docs/DIFY_LOCAL_SETUP.md).
+For development: `make dev PYTHON=.venv/bin/python`. For reports: `.venv/bin/python scripts/run_evaluations.py --source baseline` or `--source chatbot`. Rebuild after source changes. See [quickstart](starter-kit/QUICKSTART.md), [environment reference](starter-kit/ENVIRONMENT.md), and optional [self-hosting](docs/DIFY_LOCAL_SETUP.md).
 
-Tests verify software behavior and score boundaries using controlled judge fixtures. Offline CSV runs assess explicit regressions and source integrity. Neither proves semantic resolution quality or the 95% product target. Live Dify/OpenAI verification requires keys.
+## Tools, skills and repository
 
-## Configuration and commands
+`python3 scripts/dify_api.py --help` exposes app metadata, blocking generation and knowledge operations with credential-free `--dry-run` previews. It reads process environment, while the web app centrally loads `.env`. Separate `DIFY_KNOWLEDGE_API_KEY` credentials serve knowledge operations. Redirects and automatic POST retries are rejected; streaming and console authoring require other integrations.
 
-The web application and evaluation CLI centrally load local `.env`; process environment values override it. The standalone Dify helper reads only process environment, not `.env` automatically. Use `.env.example` as a configuration template for the consuming project's centralized environment loader or export variables in your shell. `DIFY_API_BASE_URL` defaults to `http://localhost/v1`; Compose overrides it with `DIFY_DOCKER_API_BASE_URL` (default `http://host.docker.internal/v1`); `DIFY_TIMEOUT` defaults to 100 seconds. Live app commands require `DIFY_APP_API_KEY`; live knowledge commands require the separate `DIFY_KNOWLEDGE_API_KEY`. Live generation requires `DIFY_USER` or `--user`.
+Five project-local [.agents/skills](.agents/skills/) cover Workflow design, Service API, knowledge, plugins and self-hosting. Four [worker briefs](agents/workers/) are portable role instructions, not automatic agent registration. See [resource map](docs/RESOURCE_MAP.md) and [adoption guide](docs/ADOPTION.md). Native Dify skills, Codex skills and plugins are distinct formats.
 
-```sh
-python3 scripts/dify_api.py --help
-python3 scripts/dify_api.py info
-python3 scripts/dify_api.py parameters
-python3 scripts/dify_api.py --dry-run workflow-run --inputs '{"ticket_text":"Where do I get an app API key?"}' --user demo-user
-python3 scripts/dify_api.py --dry-run knowledge-create-text 00000000-0000-0000-0000-000000000001 --name product-guide --text-file knowledge/sources/product-guide.md
-```
+| Directory | Responsibility |
+|---|---|
+| `backend/`, `frontend/` | HTTP services, integrations and two-tab UI |
+| `agents/`, `shared/` | Workflow, prompts, evals and canonical contracts |
+| `knowledge/`, `evals/` | Approved sources, ticket cases and evidence |
+| `docs/`, `starter-kit/`, `reviewer-kit/` | Rulebook, setup and reviewer guidance |
+| `scripts/`, `tests/` | API tools and software checks |
 
-The placeholder dataset UUID and dry-run commands are examples, not created resources. Use an actual dataset ID and the app's documented input names for live operations. Generation can consume provider credits; document creation changes a knowledge base. Review previews before live operations.
-
-Available commands: `info`, `parameters`, `workflow-run`, `chat`, `completion`, `knowledge-list`, `knowledge-get`, `knowledge-create-text`, `knowledge-index-status`, `knowledge-retrieve`. Consult each command's `--help` for payload-file and query options. `knowledge-list` returns one page. Creating text does not wait for indexing; use the returned batch ID with `knowledge-index-status` before retrieval.
-
-The helper accepts JSON object responses in blocking mode, rejects redirects, bounds file/response sizes and avoids automatic POST retries. Workflow generation with a failed status returns a failure exit code. Chat modes that require streaming, file uploads, console/workspace authoring and plugin management need dedicated integrations. Successful response JSON and dry-run payloads may contain customer data; handle output accordingly. Remote plain HTTP requires the explicit `--allow-insecure-http` option; prefer HTTPS.
-
-## Use the skills and briefs
-
-Open this repository as a Codex project for project-local skill discovery. Example request: “Use `$dify-workflow` to design the first support-ticket slice following `docs/PROJECT_GUIDELINES.md`.” For another project, copy only the needed whole skill folders into its `.agents/skills/` directory after inspecting existing entries. Global installation has not been performed.
-
-See [adoption guidance](docs/ADOPTION.md) for integration steps. Native Dify agent skills, Codex skills and Dify plugins are different formats and execution surfaces; use the relevant skill to choose the appropriate one.
-
-## Repository structure
-
-```text
-.agents/skills/          Codex skill entrypoints, references and UI metadata
-agents/workers/          Portable role briefs
-docs/                   Guidelines, resource map and adoption instructions
-backend/app/            API, configuration, retrieval and Dify adapter
-frontend/src/           Static ticket workspace and evaluation dashboard
-knowledge/sources/      Approved guide and narrow transport supplement
-shared/                 Canonical contracts, schemas and examples
-agents/evals/           Harness Evals metrics, policy and runner
-evals/                  Dataset, draft cases and generated results
-starter-kit/            Exact setup, configuration and troubleshooting
-scripts/                Service API helper
-tests/                  Unit, local HTTP integration and CLI tests
-```
-
-## Known limitations and next steps
-
-Configure a published local Dify Workflow and its app key locally; configure OpenAI access to measure semantic scores. Adjudicate the case drafts, calibrate the judge, then test a fresh holdout before approving delivery. The basic lexical router cannot establish semantic completeness for multi-issue tickets. The full structured concern-extraction/retrieval-repair design remains documented in `docs/HARNESS_DESIGN.md`; the current correction path passes evidence-anchoring feedback to the configured Workflow. No automatic ticket delivery is implemented.
+Next: independently approve case rubrics, calibrate the judge and evaluate a fresh holdout before enabling delivery. The broader reasoning harness remains a [design target](docs/HARNESS_DESIGN.md), not a claim that every proposed stage is implemented.

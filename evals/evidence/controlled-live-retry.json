@@ -1,0 +1,1733 @@
+{
+  "test_kind": "controlled_retry_scheduling_fixture",
+  "not_a_benchmark": true,
+  "description": "The first scheduler score is a synthetic 0.75 fixture. Real initial and correction judgments are retained unmodified; no production policy changed. This test establishes bounded execution, not natural quality improvement.",
+  "actual_quality_scores": [
+    0.9305,
+    0.967375
+  ],
+  "actual_judgments": [
+    {
+      "status": "pass",
+      "dimensions": {
+        "grounding": 0.9075,
+        "factual_correctness": 0.91,
+        "concern_relevance": 0.9675,
+        "completeness": 0.9625,
+        "category_accuracy": 0.9225,
+        "clarity": 0.935
+      },
+      "gates": {
+        "supported": true,
+        "correct_scope": true,
+        "addresses_requested_concern": true,
+        "appropriate_disposition": true
+      },
+      "uncertainty": {
+        "grounding": {
+          "confidence": 0.69,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.04
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.03
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.1
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.82
+            }
+          ]
+        },
+        "factual_correctness": {
+          "confidence": 0.7,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.05
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.03
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.05
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.86
+            }
+          ]
+        },
+        "concern_relevance": {
+          "confidence": 0.89,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.0
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.02
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.95
+            }
+          ]
+        },
+        "completeness": {
+          "confidence": 0.88,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.02
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.94
+            }
+          ]
+        },
+        "category_accuracy": {
+          "confidence": 0.74,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.05
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.02
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.03
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.89
+            }
+          ]
+        },
+        "clarity": {
+          "confidence": 0.78,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.04
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.02
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.02
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.91
+            }
+          ]
+        }
+      },
+      "predicate_probabilities": {
+        "supported": 1.0,
+        "correct_scope": 1.0,
+        "addresses_requested_concern": 1.0,
+        "appropriate_disposition": 1.0
+      }
+    },
+    {
+      "status": "pass",
+      "dimensions": {
+        "grounding": 0.965,
+        "factual_correctness": 0.965,
+        "concern_relevance": 0.9875,
+        "completeness": 0.9625,
+        "category_accuracy": 0.925,
+        "clarity": 0.97
+      },
+      "gates": {
+        "supported": true,
+        "correct_scope": true,
+        "addresses_requested_concern": true,
+        "appropriate_disposition": true
+      },
+      "uncertainty": {
+        "grounding": {
+          "confidence": 0.88,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.01
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.95
+            }
+          ]
+        },
+        "factual_correctness": {
+          "confidence": 0.88,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.01
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.95
+            }
+          ]
+        },
+        "concern_relevance": {
+          "confidence": 0.96,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.01
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.0
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.0
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.01
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.98
+            }
+          ]
+        },
+        "completeness": {
+          "confidence": 0.88,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.02
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.94
+            }
+          ]
+        },
+        "category_accuracy": {
+          "confidence": 0.75,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.05
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.02
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.01
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.02
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.9
+            }
+          ]
+        },
+        "clarity": {
+          "confidence": 0.9,
+          "probabilities": [
+            {
+              "value": 0,
+              "label": "0",
+              "probability": 0.02
+            },
+            {
+              "value": 1,
+              "label": "1",
+              "probability": 0.01
+            },
+            {
+              "value": 2,
+              "label": "2",
+              "probability": 0.0
+            },
+            {
+              "value": 3,
+              "label": "3",
+              "probability": 0.01
+            },
+            {
+              "value": 4,
+              "label": "4",
+              "probability": 0.96
+            }
+          ]
+        }
+      },
+      "predicate_probabilities": {
+        "supported": 1.0,
+        "correct_scope": 1.0,
+        "addresses_requested_concern": 1.0,
+        "appropriate_disposition": 1.0
+      }
+    }
+  ],
+  "workflow_runs": [
+    {
+      "workflow_run_id": "90954618-25b6-4759-8a3e-4d7cf1f21e29",
+      "status": "succeeded",
+      "feedback_sent": false
+    },
+    {
+      "workflow_run_id": "9a0ff0b0-c353-4e2d-883c-46c4c909da90",
+      "status": "succeeded",
+      "feedback_sent": true
+    }
+  ],
+  "generation_calls": 2,
+  "judge_calls": 2,
+  "feedback": "{\"previous_answer\": \"To call your published chatbot app from your own backend, you need an app API key specific to that chatbot. You can create this key inside your chatbot app builder under the API Access panel by clicking Create new Secret Key. The key will be shown once, prefixed with \\\"app-\\\". Store it securely as it won't be shown again. When making backend calls, send this key as a Bearer token in the HTTP Authorization header. Keep the key only on your backend to avoid exposure in client code.\", \"dimensions\": {\"grounding\": 0.75, \"factual_correctness\": 0.75, \"concern_relevance\": 0.75, \"completeness\": 0.75, \"category_accuracy\": 0.75, \"clarity\": 0.75}, \"required_claims\": [\"Create an app key in the published app API Access (or Monitoring > API Key) panel using Create new Secret Key.\", \"Store the key immediately: shown once and prefixed app-.\", \"The key is scoped to that app.\", \"Use the app key as a Bearer token in the Authorization header, supported by the approved API transport supplement.\"], \"prohibited_claims\": [\"Send the customer to OpenAI to create the credential for calling the Dify app.\", \"A dataset key authenticates app calls.\", \"Assert Bearer transport without retrieving the approved API transport supplement.\"], \"instruction\": \"Re-anchor the answer to verified source spans and address missing ticket concerns. Preserve facts, credential scope and policy limits. Paraphrasing cannot add facts.\"}",
+  "result": {
+    "ticket_id": "TCK-1001",
+    "ticket_text": "Hi, I just published my first chatbot app and I want to call it from my own backend. Where do I get an API key for it? -- Marcus",
+    "category": "api_keys",
+    "mode": "dify",
+    "evidence": [
+      {
+        "evidence_id": "product_guide:4:db996da73aaa571d",
+        "source_id": "product_guide",
+        "section_id": "workspace_api_keys",
+        "excerpt": "- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as \"Monitoring → API Key\") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.",
+        "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+      },
+      {
+        "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+        "source_id": "api_transport_supplement",
+        "section_id": "http_authorization",
+        "excerpt": "The official [Dify API guide](https://docs.dify.ai/en/api-reference/guides/get-started) documents sending the applicable API key as a Bearer token in the HTTP Authorization header. Make these calls from a backend so the key is not exposed in client code.",
+        "source_revision": "2d17e31b5d1129359b46a107284bab197e3002329ae19be9aeaec278dc247078"
+      },
+      {
+        "evidence_id": "product_guide:4:e6c489e8cb5f75b8",
+        "source_id": "product_guide",
+        "section_id": "workspace_api_keys",
+        "excerpt": "- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.",
+        "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+      },
+      {
+        "evidence_id": "product_guide:7:da15948452053d18",
+        "source_id": "product_guide",
+        "section_id": "model_providers",
+        "excerpt": "3. Enter the credentials the provider requires — typically an API key, and for Azure OpenAI, also the resource endpoint URL and deployment name.",
+        "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+      }
+    ],
+    "citations": [
+      {
+        "evidence_id": "product_guide:4:db996da73aaa571d",
+        "source_id": "product_guide",
+        "section_id": "workspace_api_keys"
+      },
+      {
+        "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+        "source_id": "api_transport_supplement",
+        "section_id": "http_authorization"
+      }
+    ],
+    "trace": {
+      "routing": "dify_workflow"
+    },
+    "answer": "To call your published chatbot app from your own backend, create an app API key inside that chatbot app's API Access panel (sometimes under Monitoring → API Key) by clicking Create new Secret Key. The key is shown once, prefixed with \"app-\", so store it securely as it won't be displayed again. This app key only works for that specific chatbot app. When making backend calls, send this key as a Bearer token in the HTTP Authorization header, and keep the key on your backend to avoid exposure in client code.",
+    "disposition": "answered",
+    "score": 0.967375,
+    "decision": "ship",
+    "attempts": [
+      {
+        "score": 0.75,
+        "rule_score": 1.0,
+        "decision": "retry",
+        "deterministic": {
+          "status": "pass",
+          "failures": []
+        },
+        "semantic": {
+          "status": "pass",
+          "dimensions": {
+            "grounding": 0.75,
+            "factual_correctness": 0.75,
+            "concern_relevance": 0.75,
+            "completeness": 0.75,
+            "category_accuracy": 0.75,
+            "clarity": 0.75
+          },
+          "gates": {
+            "supported": true,
+            "correct_scope": true,
+            "addresses_requested_concern": true,
+            "appropriate_disposition": true
+          },
+          "uncertainty": {
+            "grounding": {
+              "confidence": 0.69,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.04
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.03
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.1
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.82
+                }
+              ]
+            },
+            "factual_correctness": {
+              "confidence": 0.7,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.05
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.03
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.05
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.86
+                }
+              ]
+            },
+            "concern_relevance": {
+              "confidence": 0.89,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.0
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.02
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.95
+                }
+              ]
+            },
+            "completeness": {
+              "confidence": 0.88,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.02
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.94
+                }
+              ]
+            },
+            "category_accuracy": {
+              "confidence": 0.74,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.05
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.02
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.03
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.89
+                }
+              ]
+            },
+            "clarity": {
+              "confidence": 0.78,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.04
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.02
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.02
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.91
+                }
+              ]
+            }
+          },
+          "predicate_probabilities": {
+            "supported": 1.0,
+            "correct_scope": 1.0,
+            "addresses_requested_concern": 1.0,
+            "appropriate_disposition": 1.0
+          }
+        },
+        "failures": [],
+        "why": {
+          "dimensions_ranked": [
+            {
+              "dimension": "grounding",
+              "score": 0.75,
+              "weight": 0.3,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.225,
+              "reason": "All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit."
+            },
+            {
+              "dimension": "factual_correctness",
+              "score": 0.75,
+              "weight": 0.25,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.1875,
+              "reason": "Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis."
+            },
+            {
+              "dimension": "concern_relevance",
+              "score": 0.75,
+              "weight": 0.2,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.15,
+              "reason": "The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys."
+            },
+            {
+              "dimension": "completeness",
+              "score": 0.75,
+              "weight": 0.15,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.1125,
+              "reason": "Every requested concern is handled with actionable support or a necessary targeted clarification/escalation."
+            },
+            {
+              "dimension": "category_accuracy",
+              "score": 0.75,
+              "weight": 0.05,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.0375,
+              "reason": "The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label."
+            },
+            {
+              "dimension": "clarity",
+              "score": 0.75,
+              "weight": 0.05,
+              "ordinal_score": 3.0,
+              "weighted_contribution": 0.0375,
+              "reason": "The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose."
+            }
+          ],
+          "hard_failures": []
+        },
+        "dimensions": {
+          "grounding": 0.75,
+          "factual_correctness": 0.75,
+          "concern_relevance": 0.75,
+          "completeness": 0.75,
+          "category_accuracy": 0.75,
+          "clarity": 0.75
+        },
+        "harness_scores": [
+          {
+            "name": "deterministic_rules",
+            "value": 1.0,
+            "threshold": 1.0,
+            "passed": true,
+            "reason": "Known deterministic checks only; not a semantic quality score.",
+            "metadata": {
+              "failures": [],
+              "dimension": "safety"
+            },
+            "scoring_duration_ms": 0.16875006258487701,
+            "created_at": "2026-10-11T22:08:30.183838+00:00"
+          },
+          {
+            "name": "grounding",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "groundedness"
+            },
+            "scoring_duration_ms": 0.03008311614394188,
+            "created_at": "2026-10-11T22:08:30.183937+00:00"
+          },
+          {
+            "name": "factual_correctness",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.009916955605149269,
+            "created_at": "2026-10-11T22:08:30.183954+00:00"
+          },
+          {
+            "name": "concern_relevance",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.006207963451743126,
+            "created_at": "2026-10-11T22:08:30.183963+00:00"
+          },
+          {
+            "name": "completeness",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.0062498729676008224,
+            "created_at": "2026-10-11T22:08:30.183970+00:00"
+          },
+          {
+            "name": "category_accuracy",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Draft proposed category match; not approved gold.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.005292007699608803,
+            "created_at": "2026-10-11T22:08:30.183977+00:00"
+          },
+          {
+            "name": "clarity",
+            "value": 0.75,
+            "threshold": 0.8,
+            "passed": false,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.006250105798244476,
+            "created_at": "2026-10-11T22:08:30.183984+00:00"
+          }
+        ],
+        "answer": "To call your published chatbot app from your own backend, you need an app API key specific to that chatbot. You can create this key inside your chatbot app builder under the API Access panel by clicking Create new Secret Key. The key will be shown once, prefixed with \"app-\". Store it securely as it won't be shown again. When making backend calls, send this key as a Bearer token in the HTTP Authorization header. Keep the key only on your backend to avoid exposure in client code.",
+        "evidence": [
+          {
+            "evidence_id": "product_guide:4:db996da73aaa571d",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys",
+            "excerpt": "- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as \"Monitoring → API Key\") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          },
+          {
+            "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+            "source_id": "api_transport_supplement",
+            "section_id": "http_authorization",
+            "excerpt": "The official [Dify API guide](https://docs.dify.ai/en/api-reference/guides/get-started) documents sending the applicable API key as a Bearer token in the HTTP Authorization header. Make these calls from a backend so the key is not exposed in client code.",
+            "source_revision": "2d17e31b5d1129359b46a107284bab197e3002329ae19be9aeaec278dc247078"
+          },
+          {
+            "evidence_id": "product_guide:4:e6c489e8cb5f75b8",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys",
+            "excerpt": "- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          },
+          {
+            "evidence_id": "product_guide:7:da15948452053d18",
+            "source_id": "product_guide",
+            "section_id": "model_providers",
+            "excerpt": "3. Enter the credentials the provider requires — typically an API key, and for Azure OpenAI, also the resource endpoint URL and deployment name.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          }
+        ],
+        "citations": [
+          {
+            "evidence_id": "product_guide:4:db996da73aaa571d",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys"
+          },
+          {
+            "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+            "source_id": "api_transport_supplement",
+            "section_id": "http_authorization"
+          }
+        ],
+        "category": "api_keys",
+        "disposition": "answered",
+        "attempt": 1
+      },
+      {
+        "score": 0.967375,
+        "rule_score": 1.0,
+        "decision": "ship",
+        "deterministic": {
+          "status": "pass",
+          "failures": []
+        },
+        "semantic": {
+          "status": "pass",
+          "dimensions": {
+            "grounding": 0.965,
+            "factual_correctness": 0.965,
+            "concern_relevance": 0.9875,
+            "completeness": 0.9625,
+            "category_accuracy": 0.925,
+            "clarity": 0.97
+          },
+          "gates": {
+            "supported": true,
+            "correct_scope": true,
+            "addresses_requested_concern": true,
+            "appropriate_disposition": true
+          },
+          "uncertainty": {
+            "grounding": {
+              "confidence": 0.88,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.01
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.95
+                }
+              ]
+            },
+            "factual_correctness": {
+              "confidence": 0.88,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.01
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.95
+                }
+              ]
+            },
+            "concern_relevance": {
+              "confidence": 0.96,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.01
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.0
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.0
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.01
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.98
+                }
+              ]
+            },
+            "completeness": {
+              "confidence": 0.88,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.02
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.94
+                }
+              ]
+            },
+            "category_accuracy": {
+              "confidence": 0.75,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.05
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.02
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.01
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.02
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.9
+                }
+              ]
+            },
+            "clarity": {
+              "confidence": 0.9,
+              "probabilities": [
+                {
+                  "value": 0,
+                  "label": "0",
+                  "probability": 0.02
+                },
+                {
+                  "value": 1,
+                  "label": "1",
+                  "probability": 0.01
+                },
+                {
+                  "value": 2,
+                  "label": "2",
+                  "probability": 0.0
+                },
+                {
+                  "value": 3,
+                  "label": "3",
+                  "probability": 0.01
+                },
+                {
+                  "value": 4,
+                  "label": "4",
+                  "probability": 0.96
+                }
+              ]
+            }
+          },
+          "predicate_probabilities": {
+            "supported": 1.0,
+            "correct_scope": 1.0,
+            "addresses_requested_concern": 1.0,
+            "appropriate_disposition": 1.0
+          }
+        },
+        "failures": [],
+        "why": {
+          "dimensions_ranked": [
+            {
+              "dimension": "category_accuracy",
+              "score": 0.925,
+              "weight": 0.05,
+              "ordinal_score": 3.7,
+              "weighted_contribution": 0.04625,
+              "reason": "The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label."
+            },
+            {
+              "dimension": "completeness",
+              "score": 0.9625,
+              "weight": 0.15,
+              "ordinal_score": 3.85,
+              "weighted_contribution": 0.144375,
+              "reason": "Every requested concern is handled with actionable support or a necessary targeted clarification/escalation."
+            },
+            {
+              "dimension": "grounding",
+              "score": 0.965,
+              "weight": 0.3,
+              "ordinal_score": 3.86,
+              "weighted_contribution": 0.2895,
+              "reason": "All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit."
+            },
+            {
+              "dimension": "factual_correctness",
+              "score": 0.965,
+              "weight": 0.25,
+              "ordinal_score": 3.86,
+              "weighted_contribution": 0.24125,
+              "reason": "Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis."
+            },
+            {
+              "dimension": "clarity",
+              "score": 0.97,
+              "weight": 0.05,
+              "ordinal_score": 3.88,
+              "weighted_contribution": 0.0485,
+              "reason": "The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose."
+            },
+            {
+              "dimension": "concern_relevance",
+              "score": 0.9875,
+              "weight": 0.2,
+              "ordinal_score": 3.95,
+              "weighted_contribution": 0.1975,
+              "reason": "The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys."
+            }
+          ],
+          "hard_failures": [],
+          "decision_reason": "Weighted quality score meets 0.80 and all mandatory gates pass; provisional shadow classification.",
+          "rule_score_limit": "Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness."
+        },
+        "dimensions": {
+          "grounding": 0.965,
+          "factual_correctness": 0.965,
+          "concern_relevance": 0.9875,
+          "completeness": 0.9625,
+          "category_accuracy": 0.925,
+          "clarity": 0.97
+        },
+        "harness_scores": [
+          {
+            "name": "deterministic_rules",
+            "value": 1.0,
+            "threshold": 1.0,
+            "passed": true,
+            "reason": "Known deterministic checks only; not a semantic quality score.",
+            "metadata": {
+              "failures": [],
+              "dimension": "safety"
+            },
+            "scoring_duration_ms": 0.06354087963700294,
+            "created_at": "2026-10-11T22:08:35.472621+00:00"
+          },
+          {
+            "name": "grounding",
+            "value": 0.965,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "groundedness"
+            },
+            "scoring_duration_ms": 0.015500001609325409,
+            "created_at": "2026-10-11T22:08:35.472655+00:00"
+          },
+          {
+            "name": "factual_correctness",
+            "value": 0.965,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.010124873369932175,
+            "created_at": "2026-10-11T22:08:35.472670+00:00"
+          },
+          {
+            "name": "concern_relevance",
+            "value": 0.9875,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.009415904060006142,
+            "created_at": "2026-10-11T22:08:35.472682+00:00"
+          },
+          {
+            "name": "completeness",
+            "value": 0.9625,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.010458054021000862,
+            "created_at": "2026-10-11T22:08:35.472693+00:00"
+          },
+          {
+            "name": "category_accuracy",
+            "value": 0.925,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Draft proposed category match; not approved gold.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.021459069103002548,
+            "created_at": "2026-10-11T22:08:35.472717+00:00"
+          },
+          {
+            "name": "clarity",
+            "value": 0.97,
+            "threshold": 0.8,
+            "passed": true,
+            "reason": "Normalized ordinal rubric /4.",
+            "metadata": {
+              "dimension": "correctness"
+            },
+            "scoring_duration_ms": 0.009249895811080933,
+            "created_at": "2026-10-11T22:08:35.472729+00:00"
+          }
+        ],
+        "answer": "To call your published chatbot app from your own backend, create an app API key inside that chatbot app's API Access panel (sometimes under Monitoring → API Key) by clicking Create new Secret Key. The key is shown once, prefixed with \"app-\", so store it securely as it won't be displayed again. This app key only works for that specific chatbot app. When making backend calls, send this key as a Bearer token in the HTTP Authorization header, and keep the key on your backend to avoid exposure in client code.",
+        "evidence": [
+          {
+            "evidence_id": "product_guide:4:db996da73aaa571d",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys",
+            "excerpt": "- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as \"Monitoring → API Key\") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          },
+          {
+            "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+            "source_id": "api_transport_supplement",
+            "section_id": "http_authorization",
+            "excerpt": "The official [Dify API guide](https://docs.dify.ai/en/api-reference/guides/get-started) documents sending the applicable API key as a Bearer token in the HTTP Authorization header. Make these calls from a backend so the key is not exposed in client code.",
+            "source_revision": "2d17e31b5d1129359b46a107284bab197e3002329ae19be9aeaec278dc247078"
+          },
+          {
+            "evidence_id": "product_guide:4:e6c489e8cb5f75b8",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys",
+            "excerpt": "- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          },
+          {
+            "evidence_id": "product_guide:7:da15948452053d18",
+            "source_id": "product_guide",
+            "section_id": "model_providers",
+            "excerpt": "3. Enter the credentials the provider requires — typically an API key, and for Azure OpenAI, also the resource endpoint URL and deployment name.",
+            "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+          }
+        ],
+        "citations": [
+          {
+            "evidence_id": "product_guide:4:db996da73aaa571d",
+            "source_id": "product_guide",
+            "section_id": "workspace_api_keys"
+          },
+          {
+            "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+            "source_id": "api_transport_supplement",
+            "section_id": "http_authorization"
+          }
+        ],
+        "category": "api_keys",
+        "disposition": "answered",
+        "attempt": 2
+      }
+    ],
+    "evaluation": {
+      "ticket_id": "TCK-1001",
+      "score": 0.967375,
+      "rule_score": 1.0,
+      "decision": "ship",
+      "deterministic": {
+        "status": "pass",
+        "failures": []
+      },
+      "semantic": {
+        "status": "pass",
+        "dimensions": {
+          "grounding": 0.965,
+          "factual_correctness": 0.965,
+          "concern_relevance": 0.9875,
+          "completeness": 0.9625,
+          "category_accuracy": 0.925,
+          "clarity": 0.97
+        },
+        "gates": {
+          "supported": true,
+          "correct_scope": true,
+          "addresses_requested_concern": true,
+          "appropriate_disposition": true
+        },
+        "uncertainty": {
+          "grounding": {
+            "confidence": 0.88,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.02
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.01
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.01
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.01
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.95
+              }
+            ]
+          },
+          "factual_correctness": {
+            "confidence": 0.88,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.02
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.01
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.01
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.01
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.95
+              }
+            ]
+          },
+          "concern_relevance": {
+            "confidence": 0.96,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.01
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.0
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.0
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.01
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.98
+              }
+            ]
+          },
+          "completeness": {
+            "confidence": 0.88,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.02
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.01
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.01
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.02
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.94
+              }
+            ]
+          },
+          "category_accuracy": {
+            "confidence": 0.75,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.05
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.02
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.01
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.02
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.9
+              }
+            ]
+          },
+          "clarity": {
+            "confidence": 0.9,
+            "probabilities": [
+              {
+                "value": 0,
+                "label": "0",
+                "probability": 0.02
+              },
+              {
+                "value": 1,
+                "label": "1",
+                "probability": 0.01
+              },
+              {
+                "value": 2,
+                "label": "2",
+                "probability": 0.0
+              },
+              {
+                "value": 3,
+                "label": "3",
+                "probability": 0.01
+              },
+              {
+                "value": 4,
+                "label": "4",
+                "probability": 0.96
+              }
+            ]
+          }
+        },
+        "predicate_probabilities": {
+          "supported": 1.0,
+          "correct_scope": 1.0,
+          "addresses_requested_concern": 1.0,
+          "appropriate_disposition": 1.0
+        }
+      },
+      "failures": [],
+      "why": {
+        "dimensions_ranked": [
+          {
+            "dimension": "category_accuracy",
+            "score": 0.925,
+            "weight": 0.05,
+            "ordinal_score": 3.7,
+            "weighted_contribution": 0.04625,
+            "reason": "The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label."
+          },
+          {
+            "dimension": "completeness",
+            "score": 0.9625,
+            "weight": 0.15,
+            "ordinal_score": 3.85,
+            "weighted_contribution": 0.144375,
+            "reason": "Every requested concern is handled with actionable support or a necessary targeted clarification/escalation."
+          },
+          {
+            "dimension": "grounding",
+            "score": 0.965,
+            "weight": 0.3,
+            "ordinal_score": 3.86,
+            "weighted_contribution": 0.2895,
+            "reason": "All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit."
+          },
+          {
+            "dimension": "factual_correctness",
+            "score": 0.965,
+            "weight": 0.25,
+            "ordinal_score": 3.86,
+            "weighted_contribution": 0.24125,
+            "reason": "Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis."
+          },
+          {
+            "dimension": "clarity",
+            "score": 0.97,
+            "weight": 0.05,
+            "ordinal_score": 3.88,
+            "weighted_contribution": 0.0485,
+            "reason": "The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose."
+          },
+          {
+            "dimension": "concern_relevance",
+            "score": 0.9875,
+            "weight": 0.2,
+            "ordinal_score": 3.95,
+            "weighted_contribution": 0.1975,
+            "reason": "The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys."
+          }
+        ],
+        "hard_failures": [],
+        "decision_reason": "Weighted quality score meets 0.80 and all mandatory gates pass; provisional shadow classification.",
+        "rule_score_limit": "Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness."
+      },
+      "dimensions": {
+        "grounding": 0.965,
+        "factual_correctness": 0.965,
+        "concern_relevance": 0.9875,
+        "completeness": 0.9625,
+        "category_accuracy": 0.925,
+        "clarity": 0.97
+      },
+      "harness_scores": [
+        {
+          "name": "deterministic_rules",
+          "value": 1.0,
+          "threshold": 1.0,
+          "passed": true,
+          "reason": "Known deterministic checks only; not a semantic quality score.",
+          "metadata": {
+            "failures": [],
+            "dimension": "safety"
+          },
+          "scoring_duration_ms": 0.06354087963700294,
+          "created_at": "2026-10-11T22:08:35.472621+00:00"
+        },
+        {
+          "name": "grounding",
+          "value": 0.965,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Normalized ordinal rubric /4.",
+          "metadata": {
+            "dimension": "groundedness"
+          },
+          "scoring_duration_ms": 0.015500001609325409,
+          "created_at": "2026-10-11T22:08:35.472655+00:00"
+        },
+        {
+          "name": "factual_correctness",
+          "value": 0.965,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Normalized ordinal rubric /4.",
+          "metadata": {
+            "dimension": "correctness"
+          },
+          "scoring_duration_ms": 0.010124873369932175,
+          "created_at": "2026-10-11T22:08:35.472670+00:00"
+        },
+        {
+          "name": "concern_relevance",
+          "value": 0.9875,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Normalized ordinal rubric /4.",
+          "metadata": {
+            "dimension": "correctness"
+          },
+          "scoring_duration_ms": 0.009415904060006142,
+          "created_at": "2026-10-11T22:08:35.472682+00:00"
+        },
+        {
+          "name": "completeness",
+          "value": 0.9625,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Normalized ordinal rubric /4.",
+          "metadata": {
+            "dimension": "correctness"
+          },
+          "scoring_duration_ms": 0.010458054021000862,
+          "created_at": "2026-10-11T22:08:35.472693+00:00"
+        },
+        {
+          "name": "category_accuracy",
+          "value": 0.925,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Draft proposed category match; not approved gold.",
+          "metadata": {
+            "dimension": "correctness"
+          },
+          "scoring_duration_ms": 0.021459069103002548,
+          "created_at": "2026-10-11T22:08:35.472717+00:00"
+        },
+        {
+          "name": "clarity",
+          "value": 0.97,
+          "threshold": 0.8,
+          "passed": true,
+          "reason": "Normalized ordinal rubric /4.",
+          "metadata": {
+            "dimension": "correctness"
+          },
+          "scoring_duration_ms": 0.009249895811080933,
+          "created_at": "2026-10-11T22:08:35.472729+00:00"
+        }
+      ],
+      "evidence": [
+        {
+          "evidence_id": "product_guide:4:db996da73aaa571d",
+          "source_id": "product_guide",
+          "section_id": "workspace_api_keys",
+          "excerpt": "- **App API keys** authenticate calls to a specific published app (Chatbot, Agent, Workflow, or Chatflow). They are created from that app's own **API Access** (sometimes shown as \"Monitoring → API Key\") panel inside the app builder, by clicking **Create new Secret Key**. The key is shown once, prefixed `app-`, and must be stored by the developer immediately since Dify does not redisplay it later. An app's API key only works for that one app — a key created for one chatbot will return an authentication error if used against a different app's endpoint, even inside the same workspace.",
+          "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+        },
+        {
+          "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+          "source_id": "api_transport_supplement",
+          "section_id": "http_authorization",
+          "excerpt": "The official [Dify API guide](https://docs.dify.ai/en/api-reference/guides/get-started) documents sending the applicable API key as a Bearer token in the HTTP Authorization header. Make these calls from a backend so the key is not exposed in client code.",
+          "source_revision": "2d17e31b5d1129359b46a107284bab197e3002329ae19be9aeaec278dc247078"
+        },
+        {
+          "evidence_id": "product_guide:4:e6c489e8cb5f75b8",
+          "source_id": "product_guide",
+          "section_id": "workspace_api_keys",
+          "excerpt": "- **Dataset (knowledge base) API keys** authenticate calls to the Knowledge/dataset API — creating datasets, uploading documents, or querying a knowledge base directly without going through a published app. These are created from the dataset's own detail page, under its **Service API** panel, and are scoped only to the knowledge base(s) they were created against. A dataset key will not authenticate a request to an app endpoint, and an app key will not authenticate a dataset-API request.",
+          "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+        },
+        {
+          "evidence_id": "product_guide:7:da15948452053d18",
+          "source_id": "product_guide",
+          "section_id": "model_providers",
+          "excerpt": "3. Enter the credentials the provider requires — typically an API key, and for Azure OpenAI, also the resource endpoint URL and deployment name.",
+          "source_revision": "867363a847665a1b4afe68a2eeca23417c228780057e940cd1afd8e93f535110"
+        }
+      ],
+      "citations": [
+        {
+          "evidence_id": "product_guide:4:db996da73aaa571d",
+          "source_id": "product_guide",
+          "section_id": "workspace_api_keys"
+        },
+        {
+          "evidence_id": "api_transport_supplement:1:86952a55d1565643",
+          "source_id": "api_transport_supplement",
+          "section_id": "http_authorization"
+        }
+      ],
+      "attempt": 2,
+      "stop_reason": "ship_threshold",
+      "operational_failure": false,
+      "delivery_approved": false,
+      "provisional": true,
+      "original_score": 0.75,
+      "final_score": 0.967375,
+      "generation_retried": true,
+      "scoring_retried": false,
+      "judge_call_count": 2,
+      "evidence_mode": "actual_candidate_retrieval"
+    },
+    "delivery_approved": false
+  }
+}

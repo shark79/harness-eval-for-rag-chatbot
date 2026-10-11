@@ -1,0 +1,38 @@
+Hold · Score 0.552
+Ticket TCK-1002
+
+How do I connect my own OpenAI API key instead of using the built-in credits? I don't want to burn through my free trial too fast. -- Priya
+
+Evaluated response
+
+To use your own OpenAI API key instead of the built-in Dify credits, first install the OpenAI provider plugin if not already done. Then enter your OpenAI API key credentials in the provider setup, which typically requires the API key and, for Azure OpenAI, additional details like the resource endpoint URL and deployment name. Once your workspace supplies its own OpenAI key, calls to OpenAI models will be billed directly by OpenAI and will no longer consume your workspace's Dify message credits. This way, you can avoid using your free trial credits too quickly by bringing your own key.
+
+Why this decision
+
+Held: semantic_supported, semantic_correct_scope, semantic_addresses_requested_concern, semantic_appropriate_disposition.
+
+Original score: 0.552. Final score: 0.552.
+
+Answer generation retried: No. Scoring retried: No.
+
+Dimensions, lowest score first
+
+category accuracy: 0.485 · weight 5% — The selected category matches the actual ticket concern and supplied bounded taxonomy; do not trust the generator label.
+
+grounding: 0.512 · weight 30% — All substantive statements are supported by the supplied evidence. Unsupported factual details lose credit.
+
+concern relevance: 0.530 · weight 20% — The answer addresses the actual ticket operation and entity, including app vs dataset vs provider keys.
+
+factual correctness: 0.560 · weight 25% — Statements are correct under the approved fictional policy and rubric, without contradictions or invented diagnosis.
+
+clarity: 0.630 · weight 5% — The answer is clear, direct, readable and usable as a customer response; no runtime errors or unrelated prose.
+
+completeness: 0.642 · weight 15% — Every requested concern is handled with actionable support or a necessary targeted clarification/escalation.
+
+Independent judge rejected mandatory supported gate.
+Independent judge rejected mandatory correct_scope gate.
+Independent judge rejected mandatory addresses_requested_concern gate.
+Independent judge rejected mandatory appropriate_disposition gate.
+Semantic evaluation: fail
+Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness.
+Supporting documentation

@@ -14,7 +14,7 @@ The project uses a **fictional product guide and 26 fictional support tickets**.
 
 ## Review the evidence without setup
 
-The ZIP contains this README and the project under `project/`.
+This guide is available in the repository and at the root of the submission ZIP. In the ZIP, application files are under `project/` and correctly named knowledge files are under `uploads/`.
 
 | Verified example | Outcome |
 |---|---|
@@ -23,9 +23,9 @@ The ZIP contains this README and the project under `project/`.
 | A fresh provider-setup answer, TCK-1002 | **0.552 Hold** for missing required steps; no retry |
 | Dataset API key regression, TCK-1011 | **0.991 Ship** after the retrieval repair; correct app/dataset scope and all gates passed |
 
-Open the [26-ticket score report](project/evals/results/20261011T215139Z-fdc5ab46-baseline.md), [repaired Marcus dashboard](project/docs/screenshots/eval-marcus-fixed.png), and [project rulebook](project/docs/PROJECT_GUIDELINES.md).
+Open the [26-ticket score report](../evals/evidence/baseline-2026-10-11.md), [repaired Marcus dashboard](../docs/screenshots/eval-marcus-fixed.png), and [project rulebook](../docs/PROJECT_GUIDELINES.md).
 
-A separate [controlled retry trace](project/evals/results/cloud-smoke/controlled-live-retry.json) used a **synthetic 0.75 scheduling score** to exercise exactly one correction. It made two real Dify generations and two real evaluator calls; their unmodified quality scores were **0.9305 → 0.967375**. It is excluded from the benchmark. The [LLM trace](project/docs/screenshots/correction-llm-trace.png) confirms that correction feedback reached the model. A naturally triggered live borderline retry remains unobserved. These results do not establish a 95% resolution rate.
+A separate [controlled retry trace](../evals/evidence/controlled-live-retry.json) used a **synthetic 0.75 scheduling score** to exercise exactly one correction. It made two real Dify generations and two real evaluator calls; their unmodified quality scores were **0.9305 → 0.967375**. It is excluded from the benchmark. The [LLM trace](../docs/screenshots/correction-llm-trace.png) confirms that correction feedback reached the model. A naturally triggered live borderline retry remains unobserved. These results do not establish a 95% resolution rate.
 
 ## How scores become recommendations
 
@@ -46,14 +46,13 @@ Source revisions, exact passages and citations must validate. Semantic gates che
 
 ## Run the two-tab demo
 
-Install Python, Node.js/npm and Docker, then from the extracted folder:
+Install Python, Node.js/npm and Docker. From a GitHub checkout, enter the repository folder; from the submission ZIP, enter `project/`:
 
 ```sh
-cd project
 make setup
 ```
 
-For live use, import the [Dify Workflow export](project/agents/workflows/support-ticket-rag.yml) into your own Dify Cloud Studio. Configure OpenAI for generation/embedding and the Tongyi reranker, then create a knowledge base and upload the two files from `uploads/` with their supplied filenames. Use High Quality indexing; keep document chunks aligned to the paragraphs as described in the [rulebook](project/docs/PROJECT_GUIDELINES.md#transport-retrieval-repair--2026-10-11). In the imported Knowledge Retrieval node, replace the original workspace's knowledge reference with your new knowledge base. Publish the Workflow and create its app API key. The export contains the graph, not the knowledge index or provider credentials. Edit local `.env`:
+For live use, import the [Dify Workflow export](../agents/workflows/support-ticket-rag.yml) into your own Dify Cloud Studio. Configure OpenAI for generation/embedding and the Tongyi reranker, then create a knowledge base and upload both approved sources. The ZIP provides them in `uploads/` with the required filenames. In a GitHub checkout, use `knowledge/sources/`: rename `product-guide.md` to `Constructed fictional product documentation for the RAG knowledge base.md` for upload, and retain `api-transport-supplement.md`. Use High Quality indexing; keep document chunks aligned to the paragraphs as described in the [rulebook](../docs/PROJECT_GUIDELINES.md#transport-retrieval-repair--2026-10-11). In the imported Knowledge Retrieval node, replace the original workspace's knowledge reference with your new knowledge base. Publish the Workflow and create its app API key. The export contains the graph, not the knowledge index or provider credentials. Edit local `.env`:
 
 ```dotenv
 RAG_MODE=dify
@@ -74,4 +73,4 @@ Open **http://127.0.0.1:8080/** and follow the three review steps above. Without
 
 The stack is Python's standard-library HTTP server, plain HTML/CSS/JavaScript, **Harness Evals 0.25.3**, Docker, Dify Cloud Workflow with `gpt-4.1-mini`, `text-embedding-3-small` and `qwen3-rerank`, and OpenAI Decisions with `gpt-6-luna`.
 
-Developer checks: `make test PYTHON=.venv/bin/python` and `make check PYTHON=.venv/bin/python`. View logs with `make logs`; stop with `docker compose down`. See the [developer README](project/README.md) for details.
+Developer checks: `make test PYTHON=.venv/bin/python` and `make check PYTHON=.venv/bin/python`. View logs with `make logs`; stop with `docker compose down`. See the [developer README](../README.md) for details.

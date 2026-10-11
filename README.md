@@ -12,13 +12,13 @@ The supplied fictional support dataset contains answers that invent or contradic
 - `scripts/dify_api.py`, a dependency-free Python helper for app metadata, blocking generation and knowledge operations, with credential-free request previews.
 - Byte-preserving copies of both supplied files, separated into knowledge sources and evaluation data.
 
-The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Self-hosted local Dify is selected for live generation; a published Workflow and app key must be configured. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
+The basic application serves a ticket form, real local document retrieval, source excerpts, CSV export and a separate evaluation dashboard. Dify Cloud is selected for the live demo; a published Workflow and app key must be configured. The verified [Workflow export](agents/workflows/support-ticket-rag.yml) includes the retrieval, structured-output and correction-feedback bindings. Local extractive mode quotes approved paragraphs and is explicitly labeled. It does not emulate a model.
 
 [Harness Evals](https://github.com/harness/harness-evals) supplies real `Golden`, `EvalCase`, metric and `Score` execution. OpenAI Decisions supplies optional semantic judging. Every final recommendation is **ship** or **hold off**. Only scores in **[0.70, 0.80)** permit **one** corrective response attempt; at least **0.80** also requires every grounding/relevance gate to pass. No score or no improvement means hold off. See [scoring policy](docs/SCORING_POLICY.md). Current rubric drafts and judge calibration block production delivery.
 
 ## Architecture and stack
 
-The application boundary is browser → Python HTTP backend → local approved retrieval or local Dify Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
+The application boundary is browser → Python HTTP backend → local approved retrieval or Dify Workflow → separate Harness Evals service → OpenAI Decisions when configured. Keys stay server-side. The UI is static JavaScript; the backend uses the standard library and pinned Harness Evals core. Docker uses Python 3.12. Tests use unittest, real local HTTP requests, provider stubs and Node’s built-in test runner.
 
 The inspected upstream research snapshot is `langgenius/dify` commit `5fe7f018764e94aefa06f098a23e28a55d6b4e18`. That is research provenance, not a deployment recommendation. Select a release and verify feature/API compatibility before adoption; see the resource map.
 

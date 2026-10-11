@@ -7,7 +7,7 @@ This is a portable worker brief. It is not executable or automatically installed
 
 Read [dify-knowledge](../../.agents/skills/dify-knowledge/SKILL.md) and [the resource map](../../docs/RESOURCE_MAP.md).
 
-For this support project, follow [project guidelines](../../docs/PROJECT_GUIDELINES.md). Ingest [product-guide.md](../../knowledge/sources/product-guide.md) only; keep [support-tickets.csv](../../evals/datasets/support-tickets.csv) outside retrieval. Its assistant answers require adjudication. Preserve fictional fixture facts separately from real Dify platform documentation.
+For this support project, follow [project guidelines](../../docs/PROJECT_GUIDELINES.md). Ingest the approved fictional [product-guide.md](../../knowledge/sources/product-guide.md) and narrow [API transport supplement](../../knowledge/sources/api-transport-supplement.md), preserving their distinct source IDs and revisions from the [evidence manifest](../../shared/contracts/evidence-sources.json). The supplement supports Bearer authorization and backend transport only; it cannot override fictional product policies. Keep [support-tickets.csv](../../evals/datasets/support-tickets.csv) and generated answers outside retrieval. Its assistant answers require adjudication.
 
 ## Inputs
 

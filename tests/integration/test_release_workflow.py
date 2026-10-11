@@ -4,6 +4,7 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -21,7 +22,7 @@ class ReleaseWorkflowTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.chat = ChatService(Settings(root=ROOT))
 
-    def run_case(self, scores, gate=True, unchanged=False):
+    def run_case(self, scores, gate=True, unchanged=False, retry_available=True):
         class Judge:
             def __init__(self):
                 self.values = iter(scores)
@@ -44,7 +45,10 @@ class ReleaseWorkflowTests(unittest.TestCase):
                 candidate['answer'] = candidate['answer'].replace('From the approved documentation:', 'Approved documentation says:')
             return candidate
 
-        row = service.run(source='chatbot', limit=1, chat_fn=generate)['cases'][0]
+        def initial_only(text, ticket_id=''):
+            return generate(text, ticket_id)
+
+        row = service.run(source='chatbot', limit=1, chat_fn=generate if retry_available else initial_only)['cases'][0]
         return row, calls, judge.calls
 
     def test_only_borderline_scores_get_one_generation_retry(self):
@@ -68,6 +72,7 @@ class ReleaseWorkflowTests(unittest.TestCase):
         self.assertEqual(row['decision'], 'hold_off')
         self.assertEqual(len(calls), 2)
         self.assertEqual(row['stop_reason'], 'one_retry_exhausted')
+        self.assertEqual(row['attempts'][-1]['decision'], 'hold_off')
 
     def test_no_improvement_or_unchanged_answer_cannot_ship(self):
         for scores, unchanged, stop in (([0.75, 0.75], False, 'no_improvement'),
@@ -77,6 +82,22 @@ class ReleaseWorkflowTests(unittest.TestCase):
                 self.assertEqual(row['decision'], 'hold_off')
                 self.assertEqual(row['stop_reason'], stop)
                 self.assertEqual(len(calls), 2)
+                self.assertEqual(row['attempts'][-1]['decision'], 'hold_off')
+
+    def test_unavailable_retry_reports_final_hold_in_attempt(self):
+        row, calls, _ = self.run_case([0.75], retry_available=False)
+        self.assertEqual(row['decision'], 'hold_off')
+        self.assertEqual(row['stop_reason'], 'retry_unavailable')
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(row['attempts'][-1]['decision'], 'hold_off')
+
+    def test_expired_retry_budget_reports_final_hold_in_attempt(self):
+        with patch('agents.evals.evaluation_service.time.monotonic', side_effect=[0, 1000]):
+            row, calls, _ = self.run_case([0.75])
+        self.assertEqual(row['decision'], 'hold_off')
+        self.assertEqual(row['stop_reason'], 'time_budget')
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(row['attempts'][-1]['decision'], 'hold_off')
 
     def test_failed_mandatory_gate_blocks_high_score_without_retry(self):
         row, calls, _ = self.run_case([1.0, 1.0], gate=False)

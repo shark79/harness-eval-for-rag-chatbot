@@ -353,6 +353,7 @@ class EvaluationService:
             'Held: '+(', '.join(f['code'] for f in result['failures']) if result['failures'] else
                       'semantic quality is unverified' if result['score'] is None else stop_reason if len(attempts)>1 else 'quality score is below the release threshold or retry is unavailable')+'.')
         result['why']['rule_score_limit'] = 'Rule score checks explicit known regressions and source integrity only; 1.0 does not establish answer correctness.'
+        attempts[-1] = dict(result)
         row = {'ticket_id':case['case_id'],'ticket_text':case['ticket_text'],**result,'attempts':attempts,
                'stop_reason':stop_reason,'operational_failure':operational_failure,'delivery_approved':False,
                'provisional':True,'original_score':attempts[0]['score'],'final_score':result['score'],
